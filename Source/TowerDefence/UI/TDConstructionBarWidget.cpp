@@ -26,7 +26,7 @@ bool UTDConstructionBarWidget::Initialize(){
 
 				ProgressBar->SetVisibility(ESlateVisibility::Hidden);
 				ProgressBar->SetFillColorAndOpacity(FLinearColor::Blue);
-				ProgressBar->SetPercent(1);
+				ProgressBar->SetPercent(0);
 			}
 
 		}
@@ -48,10 +48,8 @@ void UTDConstructionBarWidget::NativeTick(const FGeometry& MyGeometry, float Del
 		
 		PlayerController->ProjectWorldLocationToScreen(TargetPosition, ScreenLocation);	
 
-		ProgressBar->SetPercent(CurrentTime / MaxTime);
+		ProgressBar->SetPercent(1 - CurrentTime / MaxTime);
 
-		//ProgressBar->SetRenderTranslation(ScreenLocation);
-		
 		BarSlot->SetPosition(ScreenLocation);
 
 	}
