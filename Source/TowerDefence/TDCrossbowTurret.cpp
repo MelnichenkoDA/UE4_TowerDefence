@@ -73,8 +73,7 @@ void ATDCrossbowTurret::Tick(float DeltaTime){
 			Direction.X = Direction.Y;
 			Direction.Y = 0.0f;
 
-			SpawnPlace -= Direction * 200;
-			
+			SpawnPlace -= Direction * 200;			
 			break;
 		default:
 			Direction.Y = Direction.X;

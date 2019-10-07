@@ -42,21 +42,41 @@ ATDCrossbowArrow::ATDCrossbowArrow()
 
 	LifeTime = 5.0f;
 
-	MovementSpeed = 2.5f;
-
+	MovementSpeed = 350.f;
 }
 
-// Called when the game starts or when spawned
 void ATDCrossbowArrow::BeginPlay()
 {
 	Super::BeginPlay();
 	
 }
 
-// Called every frame
 void ATDCrossbowArrow::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
 
+	LifeTime -= DeltaTime;
+
+	if (LifeTime > 0) {
+		FVector Direction = GetActorRotation().Vector();
+		FVector NewLocation = GetActorLocation();
+		switch (int(Direction.X)) {
+		case 0:
+			Direction.X = Direction.Y;
+			Direction.Y = 0.0f;
+
+			NewLocation -= Direction * MovementSpeed * DeltaTime;
+			break;
+		default:
+			Direction.Y = Direction.X;
+			Direction.X = 0.0f;
+
+			NewLocation += Direction * MovementSpeed * DeltaTime;
+			break;
+		}
+		SetActorLocation(NewLocation);
+	} else {
+		Destroy();
+	}
 }
 
