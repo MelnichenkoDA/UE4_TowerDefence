@@ -54,7 +54,7 @@ private:
 		float MovementSpeed;
 
 	UPROPERTY(EditAnywhere)
-		float Damage	;	
+		float Damage;	
 
 	float ContiniusDamageTimer;
 	float ContiniusDamage;

@@ -7,13 +7,16 @@
 #include "TDSpectatorPawn.h"
 #include "TDPlayerController.h"
 #include "UI/TDHUD.h"
+#include "Containers/Array.h"
+#include "TDDwarf.h"
+#include "Engine/TargetPoint.h"
 #include "TowerDefenceGameModeBase.generated.h"
 
 UCLASS()
 class TOWERDEFENCE_API ATowerDefenceGameModeBase : public AGameModeBase
 {
 	GENERATED_BODY()
-	
+
 public:
 	ATowerDefenceGameModeBase();
 
@@ -25,7 +28,21 @@ public:
 
 	void CloseGame();
 
+	virtual void Tick(float DeltaTime) override;
+
 private:
+	int32 MaxNum();
+
+	TArray<TArray<int32> > SpawnArray;
+
+	TArray<ATargetPoint*> WayPoints;
+
+	UPROPERTY(EditAnywhere)
+		FVector SpawnLocation;
+
+	UPROPERTY(EditAnywhere)
+		FRotator SpawnRotation;
+
 	ATDHUD* HUD;
 
 	ATDPlayerController* PlayerController;
@@ -34,12 +51,26 @@ private:
 		unsigned CurrentGold;
 
 	UPROPERTY(EditAnywhere)
-		unsigned CurrentWave;
+		unsigned MaxWave;
 
 	UPROPERTY(EditAnywhere)
-		float Timer;
+		unsigned CurrentWave;
 
-	unsigned CurrentEnemies;
 
+	UPROPERTY(EditAnywhere)
+		float WaveMaxTimer;
+
+	UPROPERTY(EditAnywhere)
+		float WaveCurrentTimer;
+
+	UPROPERTY(EditAnywhere)
+		float SpawnMaxTimer;
+
+	UPROPERTY(EditAnywhere)
+		float SpawnCurrentTimer;
+
+	bool bWaveUpdated;
+
+	bool bCanSpawn;
 
 };
