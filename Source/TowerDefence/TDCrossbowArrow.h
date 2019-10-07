@@ -27,4 +27,14 @@ private:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMeshMidArrow;
 
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* StaticMeshLeftArrow;
+
+	UPROPERTY(EditAnywhere)
+		UStaticMeshComponent* StaticMeshRightArrow;
+
+
+	UPROPERTY(EditAnywhere)
+		float LifeTime;
+
 };

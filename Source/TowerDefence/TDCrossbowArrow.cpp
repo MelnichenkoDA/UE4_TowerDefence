@@ -12,16 +12,33 @@ ATDCrossbowArrow::ATDCrossbowArrow()
 	StaticMeshMidArrow = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshMiddleArrow"));
 	if (StaticMeshMidArrow) {
 		SetRootComponent(StaticMeshMidArrow);
-		static ConstructorHelpers::FObjectFinder<UStaticMesh> StaticMeshAsset(TEXT("StaticMesh'/Game/Assets/Meshes/SM_TD_Projectile_Arrow.SM_TD_Projectile_Arrow'"));
-		if (StaticMeshAsset.Succeeded()) {
-			StaticMeshMidArrow->SetStaticMesh(StaticMeshAsset.Object);
+		static ConstructorHelpers::FObjectFinder<UStaticMesh> StaticMeshMidAsset(TEXT("StaticMesh'/Game/Assets/Meshes/SM_TD_Projectile_Arrow.SM_TD_Projectile_Arrow'"));
+		if (StaticMeshMidAsset.Succeeded()) {
+			StaticMeshMidArrow->SetStaticMesh(StaticMeshMidAsset.Object);
 
 		}
 	}
 
-	/*if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Green, "1!!");
-	}*/
+	StaticMeshLeftArrow = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshLeftArrow"));
+	if (StaticMeshLeftArrow) {
+		StaticMeshLeftArrow->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+		static ConstructorHelpers::FObjectFinder<UStaticMesh> StaticMeshLeftAsset(TEXT("StaticMesh'/Game/Assets/Meshes/SM_TD_Projectile_Arrow.SM_TD_Projectile_Arrow'"));
+		if (StaticMeshLeftAsset.Succeeded()) {
+			StaticMeshLeftArrow->SetStaticMesh(StaticMeshLeftAsset.Object);
+			StaticMeshLeftArrow->SetRelativeLocation(FVector(-60.0f, 0.0f, -20.0f));
+
+		}
+	}
+
+	StaticMeshRightArrow = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("MeshRightArrow"));
+	if (StaticMeshRightArrow) {
+		StaticMeshRightArrow->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+		static ConstructorHelpers::FObjectFinder<UStaticMesh> StaticMeshRightAsset(TEXT("StaticMesh'/Game/Assets/Meshes/SM_TD_Projectile_Arrow.SM_TD_Projectile_Arrow'"));
+		if (StaticMeshRightAsset.Succeeded()) {
+			StaticMeshRightArrow->SetStaticMesh(StaticMeshRightAsset.Object);
+			StaticMeshRightArrow->SetRelativeLocation(FVector(60.0f, 0.0f, -20.0f));
+		}
+	}
 
 }
 
