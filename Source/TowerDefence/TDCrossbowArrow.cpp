@@ -40,6 +40,10 @@ ATDCrossbowArrow::ATDCrossbowArrow()
 		}
 	}
 
+	LifeTime = 5.0f;
+
+	MovementSpeed = 2.5f;
+
 }
 
 // Called when the game starts or when spawned

@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "TDCrossbowArrow.generated.h"
 
 UCLASS()
@@ -31,10 +32,11 @@ private:
 		UStaticMeshComponent* StaticMeshLeftArrow;
 
 	UPROPERTY(EditAnywhere)
-		UStaticMeshComponent* StaticMeshRightArrow;
-
+		UStaticMeshComponent* StaticMeshRightArrow;	
 
 	UPROPERTY(EditAnywhere)
 		float LifeTime;
 
+	UPROPERTY(EditAnywhere)
+		float MovementSpeed;
 };

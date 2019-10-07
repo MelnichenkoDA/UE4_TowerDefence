@@ -36,6 +36,16 @@ ATDCrossbowTurret::ATDCrossbowTurret()
 		AnimationShooting = AnimationAsset.Object;		
 	}
 
+	ParticleComponentCreation = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleCreation"));
+	if (ParticleComponentCreation) {
+		static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("ParticleSystem'/Game/Environment/Effects/particles/P_building_creation_01.P_building_creation_01'"));
+		if (ParticleAsset.Succeeded()) {
+			ParticleComponentCreation->SetTemplate(ParticleAsset.Object);
+			ParticleComponentCreation->AttachTo(RootComponent);
+			ParticleComponentCreation->bAutoActivate = true;
+		}
+	}
+
 	ReloadMaxTime = 5.0f;
 
 	ReloadCurrentTime = 0.0f;
@@ -55,7 +65,7 @@ void ATDCrossbowTurret::Tick(float DeltaTime){
 	Super::Tick(DeltaTime);
 
 	ReloadCurrentTime -= DeltaTime;
-	if (ReloadCurrentTime <= 0) {
+	if (ReloadCurrentTime <= 0) {		
 		FVector SpawnPlace = GetActorLocation() + GetActorLocation().ForwardVector * 200.0f;
 		SpawnPlace.Z += 120;		
 		FRotator SpawnRotation = GetActorRotation();	

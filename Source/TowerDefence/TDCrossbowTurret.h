@@ -6,6 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Animation/AnimSequence.h"
 #include "TDCrossbowArrow.h"
+#include "Particles/ParticleSystemComponent.h"
 #include "TDCrossbowTurret.generated.h"
 
 UCLASS()
@@ -34,6 +35,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		UAnimSequence* AnimationShooting;
+
+	UPROPERTY(EditAnywhere)
+		UParticleSystemComponent* ParticleComponentCreation;
 
 	UPROPERTY(EditAnywhere)
 		float ReloadMaxTime;
