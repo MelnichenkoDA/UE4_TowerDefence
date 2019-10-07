@@ -47,4 +47,10 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		float Damage;
+
+	UPROPERTY(EditAnywhere)
+		float ArrowMovementSpeed;
+
+	UPROPERTY(EditAnywhere)
+		float ArrowLifeTime;
 };

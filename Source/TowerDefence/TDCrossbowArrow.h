@@ -26,6 +26,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void Initialize(const float& Damage, const float& Speed, const float& LifeTime);
+
 private:
 	UFUNCTION()
 		void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -43,12 +45,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* CollisionCompoment;
 
-	UPROPERTY(EditAnywhere)
-		float LifeTime;
+	float LifeTime;
 
-	UPROPERTY(EditAnywhere)
-		float MovementSpeed;
+	float MovementSpeed;
 
-	UPROPERTY(EditAnywhere)
-		float Damage;
+	float Damage;
 };

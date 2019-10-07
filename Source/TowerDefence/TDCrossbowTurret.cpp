@@ -52,6 +52,9 @@ ATDCrossbowTurret::ATDCrossbowTurret()
 
 	Damage = 5.0f;
 
+	ArrowMovementSpeed = 350.0f;
+
+	ArrowLifeTime = 5.0f;
 }
 
 // Called when the game starts or when spawned
@@ -87,6 +90,7 @@ void ATDCrossbowTurret::Tick(float DeltaTime){
 		SpawnRotation.Roll = 90.0f;
 		
 		ATDCrossbowArrow* Arrow = GetWorld()->SpawnActor<ATDCrossbowArrow>(SpawnPlace, SpawnRotation);
+		Arrow->Initialize(Damage, ArrowMovementSpeed, ArrowLifeTime);
 		ReloadCurrentTime = ReloadMaxTime;
 	}
 

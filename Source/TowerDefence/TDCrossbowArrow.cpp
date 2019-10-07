@@ -48,21 +48,18 @@ ATDCrossbowArrow::ATDCrossbowArrow()
 		CollisionCompoment->OnComponentBeginOverlap.AddDynamic(this, &ATDCrossbowArrow::OnBeginOverlap);
 	}
 
-	LifeTime = 5.0f;
+	LifeTime = 0.0f;
 
-	MovementSpeed = 350.f;
+	MovementSpeed = 0.0f;
 
 	Damage = 0.0f;
 }
 
-void ATDCrossbowArrow::BeginPlay()
-{
-	Super::BeginPlay();
-	
+void ATDCrossbowArrow::BeginPlay(){
+	Super::BeginPlay();	
 }
 
-void ATDCrossbowArrow::Tick(float DeltaTime)
-{
+void ATDCrossbowArrow::Tick(float DeltaTime){
 	Super::Tick(DeltaTime);
 
 	LifeTime -= DeltaTime;
@@ -88,6 +85,12 @@ void ATDCrossbowArrow::Tick(float DeltaTime)
 	} else {
 		Destroy();
 	}
+}
+
+void ATDCrossbowArrow::Initialize(const float& Damage, const float& Speed, const float& LifeTime){
+	this->Damage = Damage;
+	this->MovementSpeed = Speed;
+	this->LifeTime = LifeTime;
 }
 
 void ATDCrossbowArrow::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
