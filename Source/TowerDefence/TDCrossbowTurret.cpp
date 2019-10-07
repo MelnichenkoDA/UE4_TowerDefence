@@ -65,8 +65,24 @@ void ATDCrossbowTurret::Tick(float DeltaTime){
 	Super::Tick(DeltaTime);
 
 	ReloadCurrentTime -= DeltaTime;
-	if (ReloadCurrentTime <= 0) {		
-		FVector SpawnPlace = GetActorLocation() + GetActorLocation().ForwardVector * 200.0f;
+	if (ReloadCurrentTime <= 0) {	
+		FVector Direction = GetActorRotation().Vector();
+		FVector SpawnPlace = GetActorLocation();
+		switch (int(Direction.X)) {
+		case 0:
+			Direction.X = Direction.Y;
+			Direction.Y = 0.0f;
+
+			SpawnPlace -= Direction * 200;
+			
+			break;
+		default:
+			Direction.Y = Direction.X;
+			Direction.X = 0.0f;
+
+			SpawnPlace += Direction * 200;
+			break;
+		} 
 		SpawnPlace.Z += 120;		
 		FRotator SpawnRotation = GetActorRotation();	
 		SpawnRotation.Roll = 90.0f;
