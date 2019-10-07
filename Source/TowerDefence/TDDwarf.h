@@ -9,6 +9,8 @@
 #include "Particles/ParticleSystemComponent.h"
 #include "TDDamageTypeFlame.h"
 #include "GameFramework/Character.h"
+#include "Engine/TargetPoint.h"
+#include "Kismet/KismetMathLibrary.h"
 #include "TDDwarf.generated.h"
 
 UCLASS()
@@ -30,11 +32,16 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
+	void Initialize(TArray<ATargetPoint*>* WayPointsArray);
+
 	const bool& IsAlive();
 
 private:
 	UPROPERTY(EditAnywhere)
 		USkeletalMeshComponent* SkeletalComponent;
+
+	UPROPERTY(EditAnywhere)
+		ATargetPoint* CurrentTarget;
 
 	UPROPERTY(EditAnywhere)
 	UAnimSequence* AnimationDeath;

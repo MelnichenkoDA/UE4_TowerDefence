@@ -46,13 +46,12 @@ ATDCannonBall::ATDCannonBall()
 }
 
 // Called when the game starts or when spawned
-void ATDCannonBall::BeginPlay(){
+void ATDCannonBall::BeginPlay() {
 	Super::BeginPlay();
 }
 
 // Called every frame
-void ATDCannonBall::Tick(float DeltaTime)
-{
+void ATDCannonBall::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
 	if (bInitialized) {		
@@ -67,7 +66,7 @@ void ATDCannonBall::Tick(float DeltaTime)
 
 }
 
-void ATDCannonBall::Initialize(const FVector& TargetPosition, const float& Damage){
+void ATDCannonBall::Initialize(const FVector& TargetPosition, const float& Damage) {
 	FVector Direction = StaticMeshBall->GetComponentLocation() - TargetPosition;
 	FRotator Rot = FRotationMatrix::MakeFromX(Direction).Rotator();
 	Rot.Yaw += 180.0f;
@@ -79,7 +78,7 @@ void ATDCannonBall::Initialize(const FVector& TargetPosition, const float& Damag
 }
 
 void ATDCannonBall::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 
-	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult) {
 
 	if (OtherActor != nullptr && OtherActor->GetClass()->GetName() == "TDDwarf") {
 		FDamageEvent DamageEvent;

@@ -90,12 +90,13 @@ void ATDCannonTurret::Tick(float DeltaTime){
 			CurrentTarget = Cast<ATDDwarf>(Targets.Pop());
 		}
 
-		if (CurrentTarget) {			
-
+		if (CurrentTarget) {
 			FVector Direction = SkeletalMeshCannon->GetComponentLocation() - CurrentTarget->GetActorLocation();
 			FRotator Rot = FRotationMatrix::MakeFromX(Direction).Rotator();
 			Rot.Yaw += 180.0f;
 			SkeletalMeshCannon->SetRelativeRotation(Rot);
+
+
 
 			if (ReloadCurrentTime <= 0) {
 				if (CurrentTarget->IsAlive()) {

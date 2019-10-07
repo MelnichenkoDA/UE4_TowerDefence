@@ -3,3 +3,9 @@
 
 #include "TDAIController.h"
 
+void ATDAIController::OnMoveCompleted(FAIRequestID RequestID, const FPathFollowingResult& Result) {
+}
+
+void ATDAIController::MoveToTarget() {
+	
+}

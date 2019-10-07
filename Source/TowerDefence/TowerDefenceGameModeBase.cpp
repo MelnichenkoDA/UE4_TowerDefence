@@ -47,7 +47,7 @@ void ATowerDefenceGameModeBase::BeginPlay() {
 	TArray<FVector> WayPointsSpawnLocations;
 	WayPointsSpawnLocations.Add(FVector(-800.0f, 900.0f, 240.0f));
 	WayPointsSpawnLocations.Add(FVector(-800.0f, -900.0f, 240.0f));
-	WayPointsSpawnLocations.Add(FVector(-3650.0, 900.0f, 240.0f));
+	WayPointsSpawnLocations.Add(FVector(-3650.0, -900.0f, 240.0f));
 	WayPointsSpawnLocations.Add(FVector(-3650.0, 550.0f, 240.0f));
 	WayPointsSpawnLocations.Add(FVector(-5470.0f, 550.0f, 240.0f));
 	for (auto& Itr : WayPointsSpawnLocations) {
@@ -96,6 +96,9 @@ void ATowerDefenceGameModeBase::Tick(float DeltaTime) {
 				CurrentType = FMath::RandRange(0, SpawnArray[CurrentWave - 1].Num() - 1);
 			}
 			ATDDwarf* Dwarf = GetWorld()->SpawnActor<ATDDwarf>(SpawnLocation, SpawnRotation);
+			if (Dwarf) {
+				Dwarf->Initialize(&WayPoints);
+			}
 			SpawnArray[CurrentWave - 1][CurrentType]--;
 			SpawnCurrentTimer = SpawnMaxTimer;		
 			

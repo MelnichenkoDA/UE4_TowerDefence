@@ -52,6 +52,7 @@ ATDDwarf::ATDDwarf()
 	}
 	
 	HealthPoints = 30;	
+	MovementSpeed = 50.0f;
 
 	DestroyingTimer = 5.0f;
 
@@ -83,6 +84,37 @@ void ATDDwarf::Tick(float DeltaTime){
 			}
 		}
 	} else {
+		if (CurrentTarget) {			
+			FVector NewLocation = GetActorLocation();
+
+			FVector Direction = GetActorLocation() - CurrentTarget->GetActorLocation();
+			FRotator Rotation = FRotationMatrix::MakeFromX(Direction).Rotator();
+			Rotation.Yaw += 90.0f;
+			SetActorRotation(Rotation);
+
+			Direction = Rotation.Vector();
+			switch (int(Direction.X)) {
+			case 0:
+				Direction.X = Direction.Y;
+				Direction.Y = 0.0f;
+
+				NewLocation -= Direction * MovementSpeed * DeltaTime;
+				break;
+			default:
+				Direction.Y = Direction.X;
+				Direction.X = 0.0f;
+
+				NewLocation += Direction * MovementSpeed * DeltaTime;
+				break;
+			}
+			SetActorLocation(NewLocation);
+
+			if (GEngine) {
+				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Rotation.Vector().ToString());
+			}
+
+		}
+		
 		if (ContiniusDamageTimer > 0) {			
 			HealthPoints -= ContiniusDamage * DeltaTime;
 			
@@ -92,7 +124,7 @@ void ATDDwarf::Tick(float DeltaTime){
 					ParticleComponentBurn->Deactivate();
 				}
 			}
-		}		
+		}
 	}	
 }
 
@@ -126,6 +158,12 @@ float ATDDwarf::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, 
 	HealthPoints -= DamageAmount;
 
 	return 0.0;
+}
+
+void ATDDwarf::Initialize(TArray<ATargetPoint*>* WayPointsArray){
+	auto Iter = WayPointsArray->CreateIterator();
+	
+	CurrentTarget = (*Iter);
 }
 
 const bool& ATDDwarf::IsAlive(){

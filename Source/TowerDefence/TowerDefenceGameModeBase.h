@@ -13,8 +13,7 @@
 #include "TowerDefenceGameModeBase.generated.h"
 
 UCLASS()
-class TOWERDEFENCE_API ATowerDefenceGameModeBase : public AGameModeBase
-{
+class TOWERDEFENCE_API ATowerDefenceGameModeBase : public AGameModeBase{
 	GENERATED_BODY()
 
 public:

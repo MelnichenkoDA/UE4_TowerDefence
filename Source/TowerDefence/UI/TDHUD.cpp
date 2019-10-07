@@ -69,10 +69,6 @@ void ATDHUD::ShowConstructionMenu(AActor * EmptyTurret) {
 }
 
 void ATDHUD::CloseCurrentMenu() {
-	if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, SelectedActor->GetClass()->GetName());
-	}
-
 	if (SelectedActor->GetClass()->GetName() == "TDEmptyTyrret") {		
 		CloseConstructionMenu();
 		return;
