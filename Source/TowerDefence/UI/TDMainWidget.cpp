@@ -35,7 +35,10 @@ bool UTDMainWidget::Initialize() {
 			if (ImageGoldBorder) {
 				Panel->AddChild(ImageGoldBorder);
 				ImageGoldBorder->SetBrushFromTexture(TextureBorder);
-				ImageGoldBorder->SetRenderTranslation(FVector2D(0.0f, 0.0f));
+				UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(ImageGoldBorder->Slot);
+				if (Slot) {
+					Slot->SetAnchors(FAnchors(0.0f, 0.0f));
+				}
 			}			
 			
 			TextBoxGold = WidgetTree->ConstructWidget<UTextBlock>();
@@ -45,7 +48,7 @@ bool UTDMainWidget::Initialize() {
 				TextBoxGold->SetVisibility(ESlateVisibility::Visible);
 
 				TextBoxGold->SetText(FText::FromString("Gold : 0"));
-				TextBoxGold->Font.Size = 12;
+				TextBoxGold->Font.Size = 16;
 				TextBoxGold->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
 			}
 			
@@ -53,30 +56,37 @@ bool UTDMainWidget::Initialize() {
 			if (ImageWaveBorder) {
 				Panel->AddChild(ImageWaveBorder);
 				ImageWaveBorder->SetBrushFromTexture(TextureBorder);
-				ImageWaveBorder->SetRenderTranslation(FVector2D(GSystemResolution.ResX * 0.45, 0));
+				UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(ImageWaveBorder->Slot);
+				if (Slot) {
+					Slot->SetAnchors(FAnchors(0.5f, 0.0f));
+				}
 			}
 			
 			TextBoxCurrentWave = WidgetTree->ConstructWidget<UTextBlock>();
 			if (TextBoxCurrentWave) { 
 				Panel->AddChild(TextBoxCurrentWave);
-				TextBoxCurrentWave->SetRenderTranslation(FVector2D(GSystemResolution.ResX * 0.45 + 10.0f, 5.f));
 				TextBoxCurrentWave->SetVisibility(ESlateVisibility::Visible);
 				
 				TextBoxCurrentWave->SetText(FText::FromString("Wave : 0"));
-				TextBoxCurrentWave->Font.Size = 12;
+				TextBoxCurrentWave->Font.Size = 16;
 				TextBoxCurrentWave->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
+
+				UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(TextBoxCurrentWave->Slot);
+				if (Slot) {
+					Slot->SetAnchors(FAnchors(0.505f, 0.002f));					
+				}
 			}
 
 			ButtonMenu = WidgetTree->ConstructWidget<UButton>();
 			if (ButtonMenu) {
-				Panel->AddChild(ButtonMenu);
+				Panel->AddChild(ButtonMenu);				
 				
-				ButtonMenu->SetRenderTranslation(FVector2D(GSystemResolution.ResX * 0.9, 5.0f));
 				ButtonMenu->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
 				
 				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonMenu->Slot);
 				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(50, 50));						
+					ButtonSlot->SetSize(FVector2D(100, 100));			
+					ButtonSlot->SetAnchors(FAnchors(0.95, 0.0f));
 				}				
 				
 				ImagePause = WidgetTree->ConstructWidget<UImage>();
@@ -89,8 +99,7 @@ bool UTDMainWidget::Initialize() {
 						ImageSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
 						ImageSlot->SetPadding(FMargin(0));
 					}
-				}
-				
+				}				
 
 				ButtonMenu->OnClicked.AddDynamic(this, &UTDMainWidget::OnMenuButtonClick);
 			}
@@ -113,5 +122,5 @@ void UTDMainWidget::SetGold(const unsigned & Gold) {
 }
 
 void UTDMainWidget::SetWave(const unsigned & Wave) {
-	TextBoxCurrentWave->SetText(FText::FromString(FString::FromInt(Wave)));
+	TextBoxCurrentWave->SetText(FText::FromString(FString("Wave : ") + FString::FromInt(Wave)));
 }
