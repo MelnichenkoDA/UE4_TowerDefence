@@ -40,9 +40,19 @@ ATDCrossbowArrow::ATDCrossbowArrow()
 		}
 	}
 
+	CollisionCompoment = CreateDefaultSubobject<UBoxComponent>(TEXT("BoxCollision"));
+	if (CollisionCompoment) {
+		CollisionCompoment->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
+		CollisionCompoment->SetRelativeLocation(FVector(0.0f, 0.0f, 20.0f));
+		CollisionCompoment->SetWorldScale3D(FVector(2.25f, 1.0f, 0.25));
+		CollisionCompoment->OnComponentBeginOverlap.AddDynamic(this, &ATDCrossbowArrow::OnBeginOverlap);
+	}
+
 	LifeTime = 5.0f;
 
 	MovementSpeed = 350.f;
+
+	Damage = 0.0f;
 }
 
 void ATDCrossbowArrow::BeginPlay()
@@ -76,6 +86,17 @@ void ATDCrossbowArrow::Tick(float DeltaTime)
 		}
 		SetActorLocation(NewLocation);
 	} else {
+		Destroy();
+	}
+}
+
+void ATDCrossbowArrow::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
+	if (OtherActor->GetClass()->GetName() == "TDDwarf") {
+		FDamageEvent DamageEvent;
+		DamageEvent.DamageTypeClass = UTDDamageTypeArrow::StaticClass();
+		OtherActor->TakeDamage(Damage, DamageEvent, nullptr, nullptr);
+	}
+	else {
 		Destroy();
 	}
 }

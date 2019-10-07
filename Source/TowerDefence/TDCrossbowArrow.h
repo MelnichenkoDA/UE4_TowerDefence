@@ -5,6 +5,8 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "Components/BoxComponent.h"
+#include "TDDamageTypeArrow.h"
 #include "TDCrossbowArrow.generated.h"
 
 UCLASS()
@@ -25,6 +27,10 @@ public:
 	virtual void Tick(float DeltaTime) override;
 
 private:
+	UFUNCTION()
+		void OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMeshMidArrow;
 
@@ -35,8 +41,14 @@ private:
 		UStaticMeshComponent* StaticMeshRightArrow;	
 
 	UPROPERTY(EditAnywhere)
+		UBoxComponent* CollisionCompoment;
+
+	UPROPERTY(EditAnywhere)
 		float LifeTime;
 
 	UPROPERTY(EditAnywhere)
 		float MovementSpeed;
+
+	UPROPERTY(EditAnywhere)
+		float Damage;
 };
