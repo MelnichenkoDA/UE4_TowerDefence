@@ -7,6 +7,7 @@
 #include "Animation/AnimSequence.h"
 #include "TDCrossbowArrow.h"
 #include "Particles/ParticleSystemComponent.h"
+#include "UI/TDConstructionBarWidget.h"
 #include "TDCrossbowTurret.generated.h"
 
 UCLASS()
@@ -26,6 +27,8 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void Initialize(const float& Time);
+
 private:
 	UPROPERTY(EditAnywhere)
 		UStaticMeshComponent* StaticMeshFoundation;
@@ -38,6 +41,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		UParticleSystemComponent* ParticleComponentCreation;
+
+	UPROPERTY(EditAnywhere)
+		UTDConstructionBarWidget* ConstructionBarWidget;
 
 	UPROPERTY(EditAnywhere)
 		float ReloadMaxTime;
@@ -53,4 +59,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		float ArrowLifeTime;
+
+	bool bConstructed;
 };

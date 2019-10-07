@@ -9,6 +9,7 @@
 #include "TDEmptyTyrret.h"
 #include "TDFlamethrowerTurret.h"
 #include "TDCannonTurret.h"
+#include "TDCrossbowTurret.h"
 #include "TDBuildingsManager.generated.h"
 
 UCLASS()

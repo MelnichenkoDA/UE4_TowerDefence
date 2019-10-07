@@ -51,22 +51,27 @@ bool ATDBuildingsManager::CheckConstruct(TurretsTypes Type){
 void ATDBuildingsManager::InitConstruction(TurretsTypes Type, FTransform Location){
 	FActorSpawnParameters SpawnParams;
 	switch (Type) {
-		case TurretsTypes::FlamethrowerTurret : {
+		case TurretsTypes::FlamethrowerTurret: {
 			ATDFlamethrowerTurret* Turret = GetWorld()->SpawnActor<ATDFlamethrowerTurret>(ATDFlamethrowerTurret::StaticClass(), Location, SpawnParams);
 			if (Turret) {
 				Turret->Initialise(Time);
 			}
+			return;
 		}
-		case TurretsTypes::CannonTurret: {		
+		case TurretsTypes::CannonTurret: {
 			ATDCannonTurret* Turret = GetWorld()->SpawnActor<ATDCannonTurret>(ATDCannonTurret::StaticClass(), Location, SpawnParams);
 			if (Turret) {
 				Turret->Initiliaze(Time);
 			}
+			return;
 		}
 		case TurretsTypes::CrossbowTurret: {
-						
+			ATDCrossbowTurret* Turret = GetWorld()->SpawnActor<ATDCrossbowTurret>(ATDCrossbowTurret::StaticClass(), Location, SpawnParams);
+			if (Turret) {
+				Turret->Initialize(Time);
+			}
+			return;
 		}
-
 	}
 }
 

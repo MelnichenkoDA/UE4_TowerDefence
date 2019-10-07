@@ -67,5 +67,4 @@ private:
 	TArray<AActor*> Targets;
 
 	bool bConstructed;
-
 };

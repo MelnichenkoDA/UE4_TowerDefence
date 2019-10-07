@@ -46,6 +46,8 @@ ATDCrossbowTurret::ATDCrossbowTurret()
 		}
 	}
 
+	ConstructionBarWidget = CreateWidget<UTDConstructionBarWidget>(GetWorld(), UTDConstructionBarWidget::StaticClass());
+
 	ReloadMaxTime = 5.0f;
 
 	ReloadCurrentTime = 0.0f;
@@ -55,44 +57,55 @@ ATDCrossbowTurret::ATDCrossbowTurret()
 	ArrowMovementSpeed = 350.0f;
 
 	ArrowLifeTime = 5.0f;
+
+	bConstructed = false;
 }
 
 // Called when the game starts or when spawned
 void ATDCrossbowTurret::BeginPlay(){
-	Super::BeginPlay();
-	
+	Super::BeginPlay();	
+}
+
+void ATDCrossbowTurret::Initialize(const float& Time) {
+	ConstructionBarWidget->AddToViewport();
+	ConstructionBarWidget->SetPositionAndTime(GetActorLocation(), Time, &bConstructed);
 }
 
 // Called every frame
 void ATDCrossbowTurret::Tick(float DeltaTime){
 	Super::Tick(DeltaTime);
 
-	ReloadCurrentTime -= DeltaTime;
-	if (ReloadCurrentTime <= 0) {	
-		FVector Direction = GetActorRotation().Vector();
-		FVector SpawnPlace = GetActorLocation();
-		switch (int(Direction.X)) {
-		case 0:
-			Direction.X = Direction.Y;
-			Direction.Y = 0.0f;
+	if (bConstructed) {
+		if (ConstructionBarWidget->IsInViewport()) {
+			ConstructionBarWidget->RemoveFromViewport();			
+		}
 
-			SpawnPlace -= Direction * 200;			
-			break;
-		default:
-			Direction.Y = Direction.X;
-			Direction.X = 0.0f;
+		ReloadCurrentTime -= DeltaTime;
+		if (ReloadCurrentTime <= 0) {
+			FVector Direction = GetActorRotation().Vector();
+			FVector SpawnPlace = GetActorLocation();
+			switch (int(Direction.X)) {
+			case 0:
+				Direction.X = Direction.Y;
+				Direction.Y = 0.0f;
 
-			SpawnPlace += Direction * 200;
-			break;
-		} 
-		SpawnPlace.Z += 120;		
-		FRotator SpawnRotation = GetActorRotation();	
-		SpawnRotation.Roll = 90.0f;
-		
-		ATDCrossbowArrow* Arrow = GetWorld()->SpawnActor<ATDCrossbowArrow>(SpawnPlace, SpawnRotation);
-		Arrow->Initialize(Damage, ArrowMovementSpeed, ArrowLifeTime);
-		ReloadCurrentTime = ReloadMaxTime;
-	}
+				SpawnPlace -= Direction * 200;
+				break;
+			default:
+				Direction.Y = Direction.X;
+				Direction.X = 0.0f;
 
+				SpawnPlace += Direction * 200;
+				break;
+			}
+			SpawnPlace.Z += 120;
+			FRotator SpawnRotation = GetActorRotation();
+			SpawnRotation.Roll = 90.0f;
+
+			ATDCrossbowArrow* Arrow = GetWorld()->SpawnActor<ATDCrossbowArrow>(SpawnPlace, SpawnRotation);
+			Arrow->Initialize(Damage, ArrowMovementSpeed, ArrowLifeTime);
+			ReloadCurrentTime = ReloadMaxTime;
+		}
+	}	
 }
 
