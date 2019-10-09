@@ -52,6 +52,8 @@ ATDDwarf::ATDDwarf()
 		ParticleComponentBlood->bAutoActivate = false;
 	}
 	
+	Damage = 10.0f;
+
 	HealthPoints = 30;	
 	MovementSpeed = 100.0f;
 
@@ -176,6 +178,11 @@ void ATDDwarf::OnCollisionOverlapBegin(UPrimitiveComponent* OverlappedComp, AAct
 	if (OtherActor->GetClass()->GetName() == "TDWayPoint") {
 		CurrentTarget = CurrentTarget->GetNextPoint();
 		SetCurrentPoint();
+	}
+
+	if (OtherActor->GetClass()->GetName() == "TDBrewery") {
+		FDamageEvent DamageEvent;
+		OtherActor->TakeDamage(Damage, DamageEvent, nullptr, nullptr);
 	}
 }
 

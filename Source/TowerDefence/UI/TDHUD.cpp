@@ -44,11 +44,21 @@ void ATDHUD::ShowPauseMenu() {
 	}
 }
 
-void ATDHUD::ClosePauseMenu() {
+void ATDHUD::ClosePauseMenu(const unsigned int& Code) {
 	ATowerDefenceGameModeBase* GameMode = Cast<ATowerDefenceGameModeBase>(GetWorld()->GetAuthGameMode());
 	if (GameMode) {
-		GameMode->SetGamePaused();
-		PauseWidget->RemoveFromViewport();
+		switch (Code) {
+		case 0:
+			GameMode->SetGamePaused();
+			PauseWidget->RemoveFromViewport();
+			break;
+		case 1:
+			GameMode->Restart();
+			break;
+		case 2:
+			GameMode->CloseGame();
+			break;
+		}
 	}
 }
 
@@ -63,9 +73,6 @@ void ATDHUD::ShowConstructionMenu(AActor * EmptyTurret) {
 		BuildingsWidget->AddToViewport();
 		BuildingsWidget->SetCurrentTurret(SelectedActor);
 	}
-	/*if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("HUD2"));
-	}*/
 }
 
 void ATDHUD::CloseCurrentMenu() {
@@ -81,8 +88,4 @@ void ATDHUD::CloseConstructionMenu() {
 }
 
 void ATDHUD::CloseGame(){
-	ATowerDefenceGameModeBase* GameMode = Cast<ATowerDefenceGameModeBase>(GetWorld()->GetAuthGameMode());
-	if (GameMode) {
-		GameMode->CloseGame();
-	}
 }

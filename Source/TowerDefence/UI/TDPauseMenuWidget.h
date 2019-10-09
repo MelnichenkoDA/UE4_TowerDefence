@@ -29,16 +29,25 @@ private:
 		UImage* ImageButtonContinue;
 
 	UPROPERTY(EditAnywhere)
+		UImage* ImageButtonRestart;
+
+	UPROPERTY(EditAnywhere)
 		UImage* ImageButtonExit;
 
 	UPROPERTY(EditAnywhere)
 		UButton* ButtonContinue;
 
 	UPROPERTY(EditAnywhere)
+		UButton* ButtonRestart;
+
+	UPROPERTY(EditAnywhere)
 		UButton* ButtonExit;
 
 	UFUNCTION()
 		void OnContinueButtonClicked();
+
+	UFUNCTION()
+		void OnRestartButtonClicked();
 
 	UFUNCTION()
 		void OnExitButtonClicked();

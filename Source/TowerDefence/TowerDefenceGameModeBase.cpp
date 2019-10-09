@@ -78,6 +78,10 @@ bool ATowerDefenceGameModeBase::ChangeGold(const unsigned& Price) {
 	return false;
 }
 
+void ATowerDefenceGameModeBase::Restart(){
+	UGameplayStatics::OpenLevel(this, FName(*GetWorld()->GetName()), false);
+}
+
 void ATowerDefenceGameModeBase::CloseGame() {
 	GetWorld()->GetFirstPlayerController()->ConsoleCommand("quit");
 }
@@ -101,6 +105,7 @@ void ATowerDefenceGameModeBase::Tick(float DeltaTime) {
 			ATDDwarf* Dwarf = GetWorld()->SpawnActor<ATDDwarf>(SpawnLocation, SpawnRotation);
 			if (Dwarf) {
 				Dwarf->Initialize(WayPoints[0]);
+				Dwarf->OnDestroyed.AddDynamic(this, &ATowerDefenceGameModeBase::OnDwarfDestroyed);
 			}
 			SpawnArray[CurrentWave - 1][CurrentType]--;
 			SpawnCurrentTimer = SpawnMaxTimer;		
@@ -112,6 +117,18 @@ void ATowerDefenceGameModeBase::Tick(float DeltaTime) {
 	}
 	else {
 		WaveCurrentTimer -= DeltaTime;
+	}
+}
+
+void ATowerDefenceGameModeBase::SetGameEnded(const float& BreweryHealth){
+	if (BreweryHealth >= 0.0f) {
+		SetGamePaused();
+	}
+}
+
+void ATowerDefenceGameModeBase::OnDwarfDestroyed(AActor* Actor){
+	if (GEngine) {
+		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Hello World!"));
 	}
 }
 

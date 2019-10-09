@@ -30,16 +30,16 @@ public:
 
 	void ShowPauseMenu();	
 
-	void ClosePauseMenu();
+	void ClosePauseMenu(const unsigned int& Code);
 
 	void ShowConstructionMenu(AActor * EmptyTurret);	
 
-	void CloseCurrentMenu();	
-
-	void CloseGame();
+	void CloseCurrentMenu();		
 
 private:
 	void CloseConstructionMenu();
+
+	void CloseGame();
 
 	UPROPERTY(EditAnywhere)
 		UTDMainWidget* MainWidget;

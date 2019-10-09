@@ -24,7 +24,7 @@ bool UTDPauseMenuWidget::Initialize(){
 			WidgetTree->RootWidget = Panel;
 			UCanvasPanelSlot* PanelSlot = Cast<UCanvasPanelSlot>(Panel->Slot);
 			if (PanelSlot) {
-				PanelSlot->SetAnchors(FAnchors(0.0f, 0.0f, 1.f, 1.f));
+				PanelSlot->SetAnchors(FAnchors(0.5f, 0.5f));
 				PanelSlot->SetOffsets(FMargin(0.0f, 0.0f));
 			}
 
@@ -32,6 +32,11 @@ bool UTDPauseMenuWidget::Initialize(){
 			if (ImageButtonContinue) {
 				ImageButtonContinue->SetBrushFromTexture(TextureButton);
 			} 
+
+			ImageButtonRestart = WidgetTree->ConstructWidget<UImage>();
+			if (ImageButtonRestart) {
+				ImageButtonRestart->SetBrushFromTexture(TextureButton);
+			}
 
 			ImageButtonExit = WidgetTree->ConstructWidget<UImage>();
 			if (ImageButtonExit) {
@@ -42,12 +47,13 @@ bool UTDPauseMenuWidget::Initialize(){
 			if (ButtonContinue) {
 				Panel->AddChild(ButtonContinue);
 
-				ButtonContinue->SetRenderTranslation(FVector2D(GSystemResolution.ResX * 0.45, GSystemResolution.ResY * 0.45));
+				//ButtonContinue->SetRenderTranslation(FVector2D(GSystemResolution.ResX * 0.45, GSystemResolution.ResY * 0.45));
 				ButtonContinue->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
 
 				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonContinue->Slot);
 				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(100, 75));
+					ButtonSlot->SetSize(FVector2D(150, 100));
+					ButtonSlot->SetAnchors(FAnchors(0.45f, 0.4f));
 				}
 
 				if (ImageButtonContinue) {
@@ -63,16 +69,39 @@ bool UTDPauseMenuWidget::Initialize(){
 				ButtonContinue->OnClicked.AddDynamic(this, &UTDPauseMenuWidget::OnContinueButtonClicked);
 			} 
 
+			ButtonRestart = WidgetTree->ConstructWidget<UButton>();
+			if (ButtonRestart) {
+				Panel->AddChild(ButtonRestart);
+				ButtonRestart->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
+
+				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonRestart->Slot);
+				if (ButtonSlot) {
+					ButtonSlot->SetSize(FVector2D(150, 100));
+					ButtonSlot->SetAnchors(FAnchors(0.45f, 0.48f));
+				}
+
+				if (ImageButtonRestart) {
+					ButtonRestart->AddChild(ImageButtonRestart);
+					UButtonSlot* ImageSlot = Cast<UButtonSlot>(ImageButtonRestart->Slot);
+					if (ImageSlot) {
+						ImageSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
+						ImageSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
+						ImageSlot->SetPadding(FMargin(0));
+					}
+				}
+				ButtonRestart->OnClicked.AddDynamic(this, &UTDPauseMenuWidget::OnRestartButtonClicked);
+			}
+
 			ButtonExit = WidgetTree->ConstructWidget<UButton>();
 			if (ButtonExit) {
 				Panel->AddChild(ButtonExit);			
 
-				ButtonExit->SetRenderTranslation(FVector2D(GSystemResolution.ResX * 0.45, GSystemResolution.ResY * 0.45 + 75));
 				ButtonExit->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.f);
 
 				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonExit->Slot);
 				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(100, 75));
+					ButtonSlot->SetSize(FVector2D(150, 100));
+					ButtonSlot->SetAnchors(FAnchors(0.45f, 0.56f));
 				}
 
 				if (ImageButtonExit) {
@@ -95,10 +124,15 @@ bool UTDPauseMenuWidget::Initialize(){
 
 void UTDPauseMenuWidget::OnContinueButtonClicked(){
 	ATDHUD* HUD = Cast<ATDHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-	HUD->ClosePauseMenu();
+	HUD->ClosePauseMenu(0);
+}
+
+void UTDPauseMenuWidget::OnRestartButtonClicked(){
+	ATDHUD* HUD = Cast<ATDHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
+	HUD->ClosePauseMenu(1);
 }
 
 void UTDPauseMenuWidget::OnExitButtonClicked(){
 	ATDHUD* HUD = Cast<ATDHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
-	HUD->CloseGame();
+	HUD->ClosePauseMenu(2);
 }

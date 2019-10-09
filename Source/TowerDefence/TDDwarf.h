@@ -34,7 +34,7 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	void Initialize(ATDWayPoint* TargetPosition);
+	void Initialize(ATDWayPoint* TargetPosition, );
 
 	const bool& IsAlive();
 

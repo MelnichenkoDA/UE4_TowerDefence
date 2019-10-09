@@ -25,11 +25,18 @@ public:
 
 	bool ChangeGold(const unsigned& Price);
 
+	void Restart();
+
 	void CloseGame();
 
 	virtual void Tick(float DeltaTime) override;
 
+	void SetGameEnded(const float& BreweryHealth);
+
 private:
+	UFUNCTION()
+		void OnDwarfDestroyed(AActor* Actor);
+
 	int32 MaxNum();
 
 	TArray<TArray<int32> > SpawnArray;
