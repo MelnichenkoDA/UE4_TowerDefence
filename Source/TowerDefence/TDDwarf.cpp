@@ -11,6 +11,7 @@ ATDDwarf::ATDDwarf()
 
 	RootComponent = GetCapsuleComponent();
 	GetCapsuleComponent()->SetCapsuleHalfHeight(0.44f, true);
+	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ATDDwarf::OnCollisionOverlapBegin);
 
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> AnimationDeathAsset(TEXT("AnimSequence'/Game/Characters/DwarfGrunt/Anims/Death2.Death2'"));
 	if (AnimationDeathAsset.Succeeded()) {
@@ -62,11 +63,14 @@ ATDDwarf::ATDDwarf()
 
 	ContiniusDamageTimer = 0.0f;
 	ContiniusDamage = 0.0f;
+
+	CurrentTarget = nullptr;
 }
 
 // Called when the game starts or when spawned
 void ATDDwarf::BeginPlay(){
 	Super::BeginPlay();
+	SkeletalComponent->PlayAnimation(AnimationMoveFrd, true);
 }
 
 // Called every frame
@@ -86,7 +90,7 @@ void ATDDwarf::Tick(float DeltaTime){
 			}
 		}
 	} else {
-		if (WayPoints && (*WayPoints)[CurrentPointIndex]) {
+		if (CurrentTarget) {
 			FVector NewLocation = GetActorLocation();
 			FVector Direction = GetActorRotation().Vector();	
 
@@ -157,8 +161,8 @@ float ATDDwarf::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, 
 	return 0.0;
 }
 
-void ATDDwarf::Initialize(TArray<ATargetPoint*> const * WayPointsArray){
-	WayPoints = WayPointsArray;	
+void ATDDwarf::Initialize(ATDWayPoint* TargetPosition){
+	CurrentTarget = TargetPosition;
 	SetCurrentPoint();
 }
 
@@ -166,14 +170,22 @@ const bool& ATDDwarf::IsAlive(){
 	return bIsAlive;
 }
 
+void ATDDwarf::OnCollisionOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){
+
+	if (OtherActor->GetClass()->GetName() == "TDWayPoint") {
+		CurrentTarget = CurrentTarget->GetNextPoint();
+		SetCurrentPoint();
+	}
+}
+
+
 void ATDDwarf::SetCurrentPoint(){
-	if (WayPoints && WayPoints->IsValidIndex(CurrentPointIndex)) {
-		FVector Direction = GetActorLocation() - (*WayPoints)[CurrentPointIndex]->GetActorLocation();
+	if (CurrentTarget) {
+		FVector Direction = GetActorLocation() - CurrentTarget->GetActorLocation();
 		FRotator Rotation = FRotationMatrix::MakeFromX(Direction).Rotator();
 		Rotation.Yaw += 90.0f;
 		SetActorRotation(Rotation);
-
-		++CurrentPointIndex;
 	}
 }
 

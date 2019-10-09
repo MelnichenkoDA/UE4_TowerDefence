@@ -9,7 +9,7 @@
 #include "UI/TDHUD.h"
 #include "Containers/Array.h"
 #include "TDDwarf.h"
-#include "Engine/TargetPoint.h"
+#include "TDWayPoint.h"
 #include "TowerDefenceGameModeBase.generated.h"
 
 UCLASS()
@@ -34,7 +34,7 @@ private:
 
 	TArray<TArray<int32> > SpawnArray;
 
-	TArray<ATargetPoint*> WayPoints;
+	TArray<ATDWayPoint*> WayPoints;
 
 	UPROPERTY(EditAnywhere)
 		FVector SpawnLocation;

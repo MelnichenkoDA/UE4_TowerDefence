@@ -21,7 +21,7 @@ ATowerDefenceGameModeBase::ATowerDefenceGameModeBase() {
 	SpawnLocation = FVector(1300.0f, 900.0f, 300.0f);
 
 	SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
-
+	
 	CurrentGold = 50;
 
 	MaxWave = 7;
@@ -51,8 +51,11 @@ void ATowerDefenceGameModeBase::BeginPlay() {
 	WayPointsSpawnLocations.Add(FVector(-3650.0, 550.0f, 240.0f));
 	WayPointsSpawnLocations.Add(FVector(-5470.0f, 550.0f, 240.0f));
 	for (auto& Itr : WayPointsSpawnLocations) {
-		ATargetPoint* Point = GetWorld()->SpawnActor<ATargetPoint>(Itr, FRotator(0.0f, 0.0f, 0.0f));
-		if (Point) {
+		ATDWayPoint* Point = GetWorld()->SpawnActor<ATDWayPoint>(Itr, FRotator(0.0f, 0.0f, 0.0f));
+		if (Point) {			
+			if (WayPoints.Num()) {
+				WayPoints.Last()->SetNextPoint(Point);
+			}
 			WayPoints.Add(Point);
 		}		
 	}
@@ -97,7 +100,7 @@ void ATowerDefenceGameModeBase::Tick(float DeltaTime) {
 			}
 			ATDDwarf* Dwarf = GetWorld()->SpawnActor<ATDDwarf>(SpawnLocation, SpawnRotation);
 			if (Dwarf) {
-				Dwarf->Initialize(&WayPoints);
+				Dwarf->Initialize(WayPoints[0]);
 			}
 			SpawnArray[CurrentWave - 1][CurrentType]--;
 			SpawnCurrentTimer = SpawnMaxTimer;		

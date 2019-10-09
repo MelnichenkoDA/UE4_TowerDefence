@@ -4,6 +4,7 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
+#include "Components/BoxComponent.h"
 #include "TDWayPoint.generated.h"
 
 UCLASS()
@@ -23,7 +24,14 @@ public:
 	// Called every frame
 	virtual void Tick(float DeltaTime) override;
 
+	void SetNextPoint(ATDWayPoint* Point);
+
+	ATDWayPoint* GetNextPoint();
+
 private:
 	UPROPERTY(EditAnywhere)
+		UBoxComponent* BoxComponentCollision;
 
+	UPROPERTY(EditAnywhere)
+		ATDWayPoint* NextPoint;
 };
