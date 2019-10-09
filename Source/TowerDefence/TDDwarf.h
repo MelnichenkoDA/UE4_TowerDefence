@@ -11,6 +11,7 @@
 #include "GameFramework/Character.h"
 #include "Engine/TargetPoint.h"
 #include "Kismet/KismetMathLibrary.h"
+#include "Containers/Array.h"
 #include "TDDwarf.generated.h"
 
 UCLASS()
@@ -32,16 +33,17 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	void Initialize(TArray<ATargetPoint*>* WayPointsArray);
+	void Initialize(TArray<ATargetPoint*> const * WayPointsArray);
 
 	const bool& IsAlive();
 
 private:
-	UPROPERTY(EditAnywhere)
-		USkeletalMeshComponent* SkeletalComponent;
+	void SetCurrentPoint();
 
 	UPROPERTY(EditAnywhere)
-		ATargetPoint* CurrentTarget;
+		USkeletalMeshComponent* SkeletalComponent;
+	
+	TArray<ATargetPoint*> const * WayPoints;
 
 	UPROPERTY(EditAnywhere)
 	UAnimSequence* AnimationDeath;
@@ -67,6 +69,8 @@ private:
 	float ContiniusDamage;
 
 	float DestroyingTimer;
+
+	unsigned CurrentPointIndex;
 
 	bool bIsUnderFlame;
 	bool bIsAlive;

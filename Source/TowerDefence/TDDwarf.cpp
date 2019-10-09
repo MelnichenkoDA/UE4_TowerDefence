@@ -52,11 +52,13 @@ ATDDwarf::ATDDwarf()
 	}
 	
 	HealthPoints = 30;	
-	MovementSpeed = 50.0f;
+	MovementSpeed = 100.0f;
 
 	DestroyingTimer = 5.0f;
 
 	bIsAlive = true;
+
+	CurrentPointIndex = 0;
 
 	ContiniusDamageTimer = 0.0f;
 	ContiniusDamage = 0.0f;
@@ -84,16 +86,11 @@ void ATDDwarf::Tick(float DeltaTime){
 			}
 		}
 	} else {
-		if (CurrentTarget) {			
+		if (WayPoints && (*WayPoints)[CurrentPointIndex]) {
 			FVector NewLocation = GetActorLocation();
+			FVector Direction = GetActorRotation().Vector();	
 
-			FVector Direction = GetActorLocation() - CurrentTarget->GetActorLocation();
-			FRotator Rotation = FRotationMatrix::MakeFromX(Direction).Rotator();
-			Rotation.Yaw += 90.0f;
-			SetActorRotation(Rotation);
-
-			Direction = Rotation.Vector();
-			switch (int(Direction.X)) {
+			switch (static_cast<int>(FMath::RoundHalfFromZero(Direction.X))) {
 			case 0:
 				Direction.X = Direction.Y;
 				Direction.Y = 0.0f;
@@ -108,11 +105,6 @@ void ATDDwarf::Tick(float DeltaTime){
 				break;
 			}
 			SetActorLocation(NewLocation);
-
-			if (GEngine) {
-				GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, Rotation.Vector().ToString());
-			}
-
 		}
 		
 		if (ContiniusDamageTimer > 0) {			
@@ -154,19 +146,34 @@ float ATDDwarf::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, 
 			ParticleComponentBlood->Activate();
 		}
 	}
+	if (DamageTypeName == "TDDamageTypeCrossbow") {
+		if (!ParticleComponentBlood->bIsActive) {
+			ParticleComponentBlood->Activate();
+		}
+	}
 
 	HealthPoints -= DamageAmount;
 
 	return 0.0;
 }
 
-void ATDDwarf::Initialize(TArray<ATargetPoint*>* WayPointsArray){
-	auto Iter = WayPointsArray->CreateIterator();
-	
-	CurrentTarget = (*Iter);
+void ATDDwarf::Initialize(TArray<ATargetPoint*> const * WayPointsArray){
+	WayPoints = WayPointsArray;	
+	SetCurrentPoint();
 }
 
 const bool& ATDDwarf::IsAlive(){
 	return bIsAlive;
+}
+
+void ATDDwarf::SetCurrentPoint(){
+	if (WayPoints && WayPoints->IsValidIndex(CurrentPointIndex)) {
+		FVector Direction = GetActorLocation() - (*WayPoints)[CurrentPointIndex]->GetActorLocation();
+		FRotator Rotation = FRotationMatrix::MakeFromX(Direction).Rotator();
+		Rotation.Yaw += 90.0f;
+		SetActorRotation(Rotation);
+
+		++CurrentPointIndex;
+	}
 }
 
