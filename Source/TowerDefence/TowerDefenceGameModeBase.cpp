@@ -35,9 +35,11 @@ ATowerDefenceGameModeBase::ATowerDefenceGameModeBase() {
 	bWaveUpdated = false;
 
 	bCanSpawn = true;
+
+	bGameFinished = false;
 }
 
-void ATowerDefenceGameModeBase::BeginPlay() {
+void ATowerDefenceGameModeBase::BeginPlay() {	
 	HUD = Cast<ATDHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());
 	if (HUD) {
 		HUD->UpdateGold(CurrentGold);
@@ -49,15 +51,15 @@ void ATowerDefenceGameModeBase::BeginPlay() {
 	WayPointsSpawnLocations.Add(FVector(-800.0f, -900.0f, 240.0f));
 	WayPointsSpawnLocations.Add(FVector(-3650.0, -900.0f, 240.0f));
 	WayPointsSpawnLocations.Add(FVector(-3650.0, 550.0f, 240.0f));
-	WayPointsSpawnLocations.Add(FVector(-5470.0f, 550.0f, 240.0f));
+	WayPointsSpawnLocations.Add(FVector(-6000.0f, 550.0f, 240.0f));
 	for (auto& Itr : WayPointsSpawnLocations) {
 		ATDWayPoint* Point = GetWorld()->SpawnActor<ATDWayPoint>(Itr, FRotator(0.0f, 0.0f, 0.0f));
-		if (Point) {			
+		if (Point) {
 			if (WayPoints.Num()) {
 				WayPoints.Last()->SetNextPoint(Point);
 			}
 			WayPoints.Add(Point);
-		}		
+		}
 	}
 
 	PlayerController = Cast<ATDPlayerController>(GEngine->GetFirstLocalPlayerController(GetWorld()));
@@ -69,13 +71,18 @@ void ATowerDefenceGameModeBase::SetGamePaused() {
 	}
 }
 
-bool ATowerDefenceGameModeBase::ChangeGold(const unsigned& Price) {
-	if (CurrentGold >= Price) {
-		CurrentGold -= Price;
-		HUD->UpdateGold(CurrentGold);
-		return true;
+bool ATowerDefenceGameModeBase::ChangeGold(const unsigned& Value, bool bMinus) {
+	bool bResult = false;
+	if (bMinus){
+		if (CurrentGold >= Value) {
+			CurrentGold -= Value;
+			bResult = true;
+		}
+	} else {
+		CurrentGold += Value;
 	}
-	return false;
+	HUD->UpdateGold(CurrentGold);
+	return bResult;
 }
 
 void ATowerDefenceGameModeBase::Restart(){
@@ -104,8 +111,10 @@ void ATowerDefenceGameModeBase::Tick(float DeltaTime) {
 			}
 			ATDDwarf* Dwarf = GetWorld()->SpawnActor<ATDDwarf>(SpawnLocation, SpawnRotation);
 			if (Dwarf) {
-				Dwarf->Initialize(WayPoints[0]);
+				DwarfType Type = static_cast<DwarfType>(CurrentType);
+				Dwarf->Initialize(WayPoints[0], Type);
 				Dwarf->OnDestroyed.AddDynamic(this, &ATowerDefenceGameModeBase::OnDwarfDestroyed);
+				++AliveDwarfCount;
 			}
 			SpawnArray[CurrentWave - 1][CurrentType]--;
 			SpawnCurrentTimer = SpawnMaxTimer;		
@@ -120,15 +129,31 @@ void ATowerDefenceGameModeBase::Tick(float DeltaTime) {
 	}
 }
 
-void ATowerDefenceGameModeBase::SetGameEnded(const float& BreweryHealth){
-	if (BreweryHealth >= 0.0f) {
-		SetGamePaused();
-	}
+void ATowerDefenceGameModeBase::BreweryDestroyed(){
+	bGameFinished = true;
+	HUD->ShowPauseMenu();
+}
+
+const bool& ATowerDefenceGameModeBase::GetGameFinished(){
+	return bGameFinished;
 }
 
 void ATowerDefenceGameModeBase::OnDwarfDestroyed(AActor* Actor){
-	if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Yellow, TEXT("Hello World!"));
+	if (Actor) {
+		ATDDwarf* Dwarf = Cast<ATDDwarf>(Actor);
+		if (Dwarf) {
+			ChangeGold(Dwarf->GetAward());
+		}
+	}
+
+	--AliveDwarfCount;
+	if (AliveDwarfCount <= 0) {
+		bWaveUpdated = false;
+		bCanSpawn = true;
+		if (CurrentWave == SpawnArray.Num()) {
+			bGameFinished = true;
+			HUD->ShowPauseMenu();
+		}
 	}
 }
 

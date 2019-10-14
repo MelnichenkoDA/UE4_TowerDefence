@@ -45,10 +45,11 @@ void ATDBrewery::Tick(float DeltaTime)
 
 float ATDBrewery::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser){
 	HealthPoints -= DamageAmount;
-	if (int32(FMath::RoundHalfFromZero(HealthPoints)) <= 0) {
+
+	if (HealthPoints <= 0) {
 		ATowerDefenceGameModeBase* GameMode = Cast<ATowerDefenceGameModeBase>(GetWorld()->GetAuthGameMode());
 		if (GameMode) {
-			
+			GameMode->BreweryDestroyed();
 		}
 	}
 	return 0.0f;

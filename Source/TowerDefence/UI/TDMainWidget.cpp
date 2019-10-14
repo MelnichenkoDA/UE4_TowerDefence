@@ -114,10 +114,7 @@ void UTDMainWidget::OnMenuButtonClick() {
 	HUD->ShowPauseMenu();
 }
 
-void UTDMainWidget::SetGold(const unsigned & Gold) {	
-	if (GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, FString::FromInt(Gold));
-	}
+void UTDMainWidget::SetGold(const unsigned & Gold) {
 	TextBoxGold->SetText(FText::FromString(FString("Gold : ") + FString::FromInt(Gold)));		
 }
 

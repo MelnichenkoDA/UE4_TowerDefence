@@ -29,17 +29,17 @@ bool ATDBuildingsManager::CheckConstruct(TurretsTypes Type){
 	if (GameMode) {	
 		switch (Type) {
 			case TurretsTypes::FlamethrowerTurret: {
-				if (GameMode->ChangeGold(TurretsCost::FlamethrowerTurretCost)) {
+				if (GameMode->ChangeGold(TurretsCost::FlamethrowerTurretCost, true)) {
 					return true;
 				}
 			}
 			case	 TurretsTypes::CannonTurret: {
-				if (GameMode->ChangeGold(TurretsCost::CannonTurretCost)) {
+				if (GameMode->ChangeGold(TurretsCost::CannonTurretCost, true)) {
 					return true;
 				}
 			}
 			case TurretsTypes::CrossbowTurret: {
-				if (GameMode->ChangeGold(TurretsCost::CrossbowTurretCost)) {
+				if (GameMode->ChangeGold(TurretsCost::CrossbowTurretCost, true)) {
 					return true;
 				}
 			}

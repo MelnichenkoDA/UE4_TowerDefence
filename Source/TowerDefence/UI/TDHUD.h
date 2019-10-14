@@ -39,8 +39,6 @@ public:
 private:
 	void CloseConstructionMenu();
 
-	void CloseGame();
-
 	UPROPERTY(EditAnywhere)
 		UTDMainWidget* MainWidget;
 

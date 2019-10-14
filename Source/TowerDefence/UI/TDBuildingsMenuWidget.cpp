@@ -131,9 +131,6 @@ bool UTDBuildingsMenuWidget::Initialize(){
 
 void UTDBuildingsMenuWidget::SetCurrentTurret(AActor * Turret) {
 	CurrentTurret = Turret;
-	if (Turret == nullptr && GEngine) {
-		GEngine->AddOnScreenDebugMessage(-1, 5.f, FColor::Red, TEXT("WIDGET"));
-	}
 }
 
 void UTDBuildingsMenuWidget::OnFlameButtonCLicked() {

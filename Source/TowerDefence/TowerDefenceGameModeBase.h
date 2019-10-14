@@ -10,6 +10,7 @@
 #include "Containers/Array.h"
 #include "TDDwarf.h"
 #include "TDWayPoint.h"
+#include "TDDwarfTypes.hpp"
 #include "TowerDefenceGameModeBase.generated.h"
 
 UCLASS()
@@ -23,7 +24,7 @@ public:
 
 	void SetGamePaused();
 
-	bool ChangeGold(const unsigned& Price);
+	bool ChangeGold(const unsigned& Value, bool bMinus = false);
 
 	void Restart();
 
@@ -31,7 +32,9 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	void SetGameEnded(const float& BreweryHealth);
+	void BreweryDestroyed();
+
+	const bool& GetGameFinished();
 
 private:
 	UFUNCTION()
@@ -54,16 +57,6 @@ private:
 	ATDPlayerController* PlayerController;
 
 	UPROPERTY(EditAnywhere)
-		unsigned CurrentGold;
-
-	UPROPERTY(EditAnywhere)
-		unsigned MaxWave;
-
-	UPROPERTY(EditAnywhere)
-		unsigned CurrentWave;
-
-
-	UPROPERTY(EditAnywhere)
 		float WaveMaxTimer;
 
 	UPROPERTY(EditAnywhere)
@@ -75,8 +68,22 @@ private:
 	UPROPERTY(EditAnywhere)
 		float SpawnCurrentTimer;
 
+	UPROPERTY(EditAnywhere)
+		unsigned CurrentGold;
+
+	UPROPERTY(EditAnywhere)
+		unsigned MaxWave;
+
+	UPROPERTY(EditAnywhere)
+		unsigned CurrentWave;
+
+	UPROPERTY(EditAnywhere)
+		unsigned AliveDwarfCount;
+
 	bool bWaveUpdated;
 
 	bool bCanSpawn;
+
+	bool bGameFinished;
 
 };

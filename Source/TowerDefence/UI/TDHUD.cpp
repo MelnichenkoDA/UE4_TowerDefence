@@ -49,8 +49,10 @@ void ATDHUD::ClosePauseMenu(const unsigned int& Code) {
 	if (GameMode) {
 		switch (Code) {
 		case 0:
-			GameMode->SetGamePaused();
-			PauseWidget->RemoveFromViewport();
+			if (!GameMode->GetGameFinished()) {
+				GameMode->SetGamePaused();
+				PauseWidget->RemoveFromViewport();
+			}
 			break;
 		case 1:
 			GameMode->Restart();
@@ -85,7 +87,4 @@ void ATDHUD::CloseCurrentMenu() {
 void ATDHUD::CloseConstructionMenu() {
 	SelectedActor = nullptr;
 	BuildingsWidget->RemoveFromViewport();
-}
-
-void ATDHUD::CloseGame(){
 }

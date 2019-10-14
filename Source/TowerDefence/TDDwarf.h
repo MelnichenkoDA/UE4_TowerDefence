@@ -13,6 +13,7 @@
 #include "Kismet/KismetMathLibrary.h"
 #include "Containers/Array.h"
 #include "TDWayPoint.h"
+#include "TDDwarfTypes.hpp"
 #include "TDDwarf.generated.h"
 
 UCLASS()
@@ -34,13 +35,15 @@ public:
 
 	virtual float TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser) override;
 
-	void Initialize(ATDWayPoint* TargetPosition, );
+	void Initialize(ATDWayPoint* TargetPosition, DwarfType Type);
 
 	const bool& IsAlive();
 
 	UFUNCTION()
 		void OnCollisionOverlapBegin(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
 			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	const unsigned& GetAward();
 
 private:	
 	void SetCurrentPoint();
@@ -77,9 +80,10 @@ private:
 	float DestroyingTimer;
 
 	unsigned CurrentPointIndex;
+	unsigned Award;
 
 	bool bIsUnderFlame;
 	bool bIsAlive;
 
-
+	
 };

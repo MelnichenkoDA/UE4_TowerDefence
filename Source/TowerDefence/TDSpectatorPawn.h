@@ -5,11 +5,10 @@
 #include "CoreMinimal.h"
 #include "GameFramework/SpectatorPawn.h"
 #include "Camera/CameraComponent.h"
+#include "Components/BoxComponent.h"
+#include "Containers/Map.h"
 #include "TDSpectatorPawn.generated.h"
 
-/**
- * 
- */
 UCLASS()
 class TOWERDEFENCE_API ATDSpectatorPawn : public ASpectatorPawn
 {
@@ -32,23 +31,29 @@ protected:
 	virtual void BeginPlay() override;
 
 private:
-	UCameraComponent* Camera;
+	UFUNCTION()
+		void BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+			int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult);
+
+	UFUNCTION()
+		void EndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex);
+
+	UPROPERTY(EditAnywhere)
+		UCameraComponent* Camera;
+
+	UPROPERTY(EditAnywhere)
+		UBoxComponent* BoxComponentCollision;
 
 	FVector MovementInput;
 
 	UPROPERTY(EditAnywhere)
 		float MovementSpeed;
 
-	UPROPERTY(EditAnywhere)
-		float MinY;
+	TMap<FString, bool*> BlockedDirections;
 
-	UPROPERTY(EditAnywhere)
-		float MaxY;
+	bool bCanMoveRight;
+	bool bCanMoveLeft;
 
-	UPROPERTY(EditAnywhere)
-		float MinX;
-
-	UPROPERTY(EditAnywhere)
-		float MaxX;
-
+	bool bCanMoveForward;
+	bool bCanMoveBackward;
 };

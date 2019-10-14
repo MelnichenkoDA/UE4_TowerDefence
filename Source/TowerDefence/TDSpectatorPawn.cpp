@@ -4,28 +4,67 @@
 #include "TDSpectatorPawn.h"
 
 ATDSpectatorPawn::ATDSpectatorPawn() {
-	PrimaryActorTick.bCanEverTick = true;
-
-	RootComponent = CreateDefaultSubobject<USceneComponent>(TEXT("RootComponent"));
+	PrimaryActorTick.bCanEverTick = true;	
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
-	Camera->SetupAttachment(RootComponent);
-	Camera->SetRelativeRotation(FRotator(-35.0f, 0.0f, 0.0f));
+	if (Camera) {
+		SetRootComponent(Camera);		
+	}	
 
-	MaxY = 2300.0f;
-	MinY = 100.0f;
+	SetActorRotation(FRotator(-45.0f, -90.0f, 0.0f));
 
-	MinX = -4400;
-	MaxX = 100.0f;
+	BoxComponentCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
+	if (BoxComponentCollision) {
+		BoxComponentCollision->AttachTo(RootComponent);
+		BoxComponentCollision->SetRelativeLocation(FVector(0.0f, 0.0f, 0.0f));
+		BoxComponentCollision->OnComponentBeginOverlap.AddDynamic(this, &ATDSpectatorPawn::BeginOverlap);
+		BoxComponentCollision->OnComponentEndOverlap.AddDynamic(this, &ATDSpectatorPawn::EndOverlap);
+	}
 
 	MovementSpeed = 1000;
+	
+	bCanMoveRight = true;
+	bCanMoveLeft = true;
+
+	bCanMoveForward = true;
+	bCanMoveBackward = true;
 }
 
 void ATDSpectatorPawn::BeginPlay() {
 	Super::BeginPlay();
 
-	SetActorLocation(FVector(-2000.0f, 1500.0f, 1500.0f));
+	SetActorLocation(FVector(-500.0, 1000.0f, 1500.0f));
 	SetActorRotation(FRotator(0.0f, -90.0f, 0.0f));	
+}
+
+void ATDSpectatorPawn::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
+	int32 OtherBodyIndex, bool bFromSweep, const FHitResult& SweepResult){	
+
+	if (MovementInput.X > 0) {
+		bCanMoveRight = false;
+		BlockedDirections.Add(OtherActor->GetName(), &bCanMoveRight );
+	} else if (MovementInput.X < 0) {
+		bCanMoveLeft = false;
+		BlockedDirections.Add(OtherActor->GetName(), &bCanMoveLeft);
+	}
+
+	if (MovementInput.Y > 0) {
+		bCanMoveForward = false;
+		BlockedDirections.Add(OtherActor->GetName(), &bCanMoveForward );
+	}
+	else if (MovementInput.Y < 0) {
+		bCanMoveBackward = false;
+		BlockedDirections.Add(OtherActor->GetName(), &bCanMoveBackward );
+	}
+}
+
+void ATDSpectatorPawn::EndOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, int32 OtherBodyIndex){		
+	if (BlockedDirections.Find(OtherActor->GetName())) {
+		BlockedDirections.Remove(OtherActor->GetName());
+		if (BlockedDirections.Num() == 0) {
+			bCanMoveForward = bCanMoveBackward = bCanMoveLeft = bCanMoveRight = true;
+		}
+	}	
 }
 
 void ATDSpectatorPawn::Tick(float DeltaTime) {
@@ -51,19 +90,19 @@ void ATDSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputCom
 }
 
 void ATDSpectatorPawn::MoveForward(float AxisValue) {
-	if (AxisValue > 0 && GetActorLocation().Y > MinY) {
+	if (AxisValue > 0 && bCanMoveForward) {
 		MovementInput.Y = FMath::Clamp<float>(AxisValue, -1.0f, 1.0f);
 	}
-	if (AxisValue < 0 && GetActorLocation().Y < MaxY) {
+	if (AxisValue < 0 && bCanMoveBackward) {
 		MovementInput.Y = FMath::Clamp<float>(AxisValue, -1.0f, 1.0f);
 	}
 }
 
 void ATDSpectatorPawn::MoveRight(float AxisValue) {
-	if (AxisValue < 0 && GetActorLocation().X > MinX) {
+	if (AxisValue > 0 && bCanMoveRight) {
 		MovementInput.X = FMath::Clamp<float>(AxisValue, -1.0f, 1.0f);
 	}
-	if (AxisValue > 0 && GetActorLocation().X < MaxX) {
+	if (AxisValue < 0 && bCanMoveLeft) {
 		MovementInput.X = FMath::Clamp<float>(AxisValue, -1.0f, 1.0f);
 	}
 }

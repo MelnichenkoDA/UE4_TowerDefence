@@ -163,9 +163,32 @@ float ATDDwarf::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, 
 	return 0.0;
 }
 
-void ATDDwarf::Initialize(ATDWayPoint* TargetPosition){
+void ATDDwarf::Initialize(ATDWayPoint* TargetPosition, DwarfType Type){
 	CurrentTarget = TargetPosition;
 	SetCurrentPoint();
+
+	switch (Type) {
+	case DwarfType::Little : 
+		SkeletalComponent->SetWorldScale3D(FVector(0.5f, 0.5f, 0.5f));
+		Award = DwarfAwardType::LittleAward;
+		MovementSpeed = DwarfMovementSpeedType::LittleSpeed;
+		HealthPoints = DwarfHealthType::LittleHP;
+		Damage = DwarfDamageType::LittleDamage;
+		break;
+	case DwarfType::Middle :		
+		Award = DwarfAwardType::MiddleAward;
+		MovementSpeed = DwarfMovementSpeedType::MiddleSpeed;
+		HealthPoints = DwarfHealthType::MiddleHP;
+		Damage = DwarfDamageType::MiddleDamage;
+		break;
+	case DwarfType::Big:
+		SkeletalComponent->SetWorldScale3D(FVector(1.5f, 1.5f, 1.5f));
+		Award = DwarfAwardType::BigAward;
+		MovementSpeed = DwarfMovementSpeedType::BigSpeed;
+		HealthPoints = DwarfHealthType::BigHP;
+		Damage = DwarfDamageType::BigDamage;
+		break;
+	}
 }
 
 const bool& ATDDwarf::IsAlive(){
@@ -183,7 +206,12 @@ void ATDDwarf::OnCollisionOverlapBegin(UPrimitiveComponent* OverlappedComp, AAct
 	if (OtherActor->GetClass()->GetName() == "TDBrewery") {
 		FDamageEvent DamageEvent;
 		OtherActor->TakeDamage(Damage, DamageEvent, nullptr, nullptr);
+		Destroy();
 	}
+}
+
+const unsigned& ATDDwarf::GetAward(){
+	return Award;
 }
 
 
