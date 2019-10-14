@@ -26,48 +26,46 @@ bool UTDPauseMenuWidget::Initialize(){
 			if (PanelSlot) {
 				PanelSlot->SetAnchors(FAnchors(0.5f, 0.5f));
 				PanelSlot->SetOffsets(FMargin(0.0f, 0.0f));
-			}
-
-			ImageButtonContinue = WidgetTree->ConstructWidget<UImage>();
-			if (ImageButtonContinue) {
-				ImageButtonContinue->SetBrushFromTexture(TextureButton);
-			} 
-
-			ImageButtonRestart = WidgetTree->ConstructWidget<UImage>();
-			if (ImageButtonRestart) {
-				ImageButtonRestart->SetBrushFromTexture(TextureButton);
-			}
-
-			ImageButtonExit = WidgetTree->ConstructWidget<UImage>();
-			if (ImageButtonExit) {
-				ImageButtonExit->SetBrushFromTexture(TextureButton);
-			}
+			}		
 
 			ButtonContinue = WidgetTree->ConstructWidget<UButton>();
 			if (ButtonContinue) {
 				Panel->AddChild(ButtonContinue);
-
-				//ButtonContinue->SetRenderTranslation(FVector2D(GSystemResolution.ResX * 0.45, GSystemResolution.ResY * 0.45));
 				ButtonContinue->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
-
+				
 				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonContinue->Slot);
-				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(150, 100));
+				if (ButtonSlot) {					
 					ButtonSlot->SetAnchors(FAnchors(0.45f, 0.4f));
 				}
 
-				if (ImageButtonContinue) {
-					ButtonContinue->AddChild(ImageButtonContinue);
-					UButtonSlot* ImageSlot = Cast<UButtonSlot>(ImageButtonContinue->Slot);
-					if (ImageSlot) {
-						ImageSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-						ImageSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-						ImageSlot->SetPadding(FMargin(0));
+				HorizontalBoxContinue = WidgetTree->ConstructWidget<UCanvasPanel>();
+				if (HorizontalBoxContinue) {
+					ButtonContinue->AddChild(HorizontalBoxContinue);
+
+					ImageButtonContinue = WidgetTree->ConstructWidget<UImage>();
+					if (ImageButtonContinue) {
+						HorizontalBoxContinue->AddChild(ImageButtonContinue);
+
+						ImageButtonContinue->SetBrushFromTexture(TextureButton);
+						ImageButtonContinue->SetRenderScale(FVector2D(1.5, 3));
+						ImageButtonContinue->SetRenderTranslation(FVector2D(24, 25));
 					}
-				}
+
+					TextBoxContinue = WidgetTree->ConstructWidget<UTextBlock>();
+					if (TextBoxContinue) {
+						HorizontalBoxContinue->AddChild(TextBoxContinue);
+						
+						TextBoxContinue->SetVisibility(ESlateVisibility::Visible);
+						TextBoxContinue->SetRenderTranslation(FVector2D(30.0f, 25.0f));
+						TextBoxContinue->SetText(FText::FromString("Continue"));
+
+						TextBoxContinue->Font.Size = 16;
+						TextBoxContinue->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
+					}
+				}				
 
 				ButtonContinue->OnClicked.AddDynamic(this, &UTDPauseMenuWidget::OnContinueButtonClicked);
-			} 
+			} 					
 
 			ButtonRestart = WidgetTree->ConstructWidget<UButton>();
 			if (ButtonRestart) {
@@ -75,44 +73,74 @@ bool UTDPauseMenuWidget::Initialize(){
 				ButtonRestart->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
 
 				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonRestart->Slot);
-				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(150, 100));
+				if (ButtonSlot) {					
 					ButtonSlot->SetAnchors(FAnchors(0.45f, 0.48f));
 				}
 
-				if (ImageButtonRestart) {
-					ButtonRestart->AddChild(ImageButtonRestart);
-					UButtonSlot* ImageSlot = Cast<UButtonSlot>(ImageButtonRestart->Slot);
-					if (ImageSlot) {
-						ImageSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-						ImageSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-						ImageSlot->SetPadding(FMargin(0));
+				HorizontalBoxRestart = WidgetTree->ConstructWidget<UCanvasPanel>();
+				if (HorizontalBoxRestart) {
+					ButtonRestart->AddChild(HorizontalBoxRestart);
+
+					ImageButtonRestart = WidgetTree->ConstructWidget<UImage>();
+					if (ImageButtonRestart) {
+						HorizontalBoxRestart->AddChild(ImageButtonRestart);
+
+						ImageButtonRestart->SetBrushFromTexture(TextureButton);
+						ImageButtonRestart->SetRenderScale(FVector2D(1.5, 3));
+						ImageButtonRestart->SetRenderTranslation(FVector2D(24, 25));
 					}
-				}
+
+					TextBoxRestart = WidgetTree->ConstructWidget<UTextBlock>();
+					if (TextBoxRestart) {
+						HorizontalBoxRestart->AddChild(TextBoxRestart);
+						
+						TextBoxRestart->SetVisibility(ESlateVisibility::Visible);
+						TextBoxRestart->SetRenderTranslation(FVector2D(40, 25));
+						TextBoxRestart->SetText(FText::FromString("Restart"));
+
+						TextBoxRestart->Font.Size = 16;
+						TextBoxRestart->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
+					}
+				}				
+
 				ButtonRestart->OnClicked.AddDynamic(this, &UTDPauseMenuWidget::OnRestartButtonClicked);
 			}
 
 			ButtonExit = WidgetTree->ConstructWidget<UButton>();
 			if (ButtonExit) {
-				Panel->AddChild(ButtonExit);			
-
+				Panel->AddChild(ButtonExit);	
 				ButtonExit->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.f);
 
 				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonExit->Slot);
 				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(150, 100));
 					ButtonSlot->SetAnchors(FAnchors(0.45f, 0.56f));
 				}
 
-				if (ImageButtonExit) {
-					ButtonExit->AddChild(ImageButtonExit);
-					UButtonSlot* ImageSlot = Cast<UButtonSlot>(ImageButtonExit->Slot);
-					if (ImageSlot) {
-						ImageSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-						ImageSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-						ImageSlot->SetPadding(FMargin(0));
+				HorizontalBoxExit = WidgetTree->ConstructWidget<UCanvasPanel>();
+				if (HorizontalBoxExit) {
+					ButtonExit->AddChild(HorizontalBoxExit);
+
+					ImageButtonExit = WidgetTree->ConstructWidget<UImage>();
+					if (ImageButtonExit) {
+						HorizontalBoxExit->AddChild(ImageButtonExit);
+
+						ImageButtonExit->SetBrushFromTexture(TextureButton);
+						ImageButtonExit->SetRenderScale(FVector2D(1.5, 3));
+						ImageButtonExit->SetRenderTranslation(FVector2D(24, 25));
 					}
-				}
+
+					TextBoxExit = WidgetTree->ConstructWidget<UTextBlock>();
+					if (TextBoxExit) {
+						HorizontalBoxExit->AddChild(TextBoxExit);
+
+						TextBoxExit->SetRenderTranslation(FVector2D(55, 25));
+						TextBoxExit->SetVisibility(ESlateVisibility::Visible);
+
+						TextBoxExit->SetText(FText::FromString("Exit"));
+						TextBoxExit->Font.Size = 16;
+						TextBoxExit->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
+					}
+				}				
 
 				ButtonExit->OnClicked.AddDynamic(this, &UTDPauseMenuWidget::OnExitButtonClicked);
 			}

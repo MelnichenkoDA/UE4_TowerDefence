@@ -40,7 +40,7 @@ ATDCannonBall::ATDCannonBall()
 
 	Speed = 5.0f;
 
-	LifeTime = 1.0f;
+	LifeTime = 0.5f;
 
 	bInitialized = false;
 }

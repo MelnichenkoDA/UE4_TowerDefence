@@ -7,6 +7,7 @@
 #include "Runtime/UMG/Public/UMG.h"
 #include "Runtime/UMG/Public/Components/Button.h"
 #include "Runtime/UMG/Public/Components/TextBlock.h"
+#include "Components/PanelWidget.h"
 #include "TDPauseMenuWidget.generated.h"
 
 UCLASS()
@@ -21,18 +22,18 @@ public:
 	virtual bool Initialize() override;
 
 private:
+	UFUNCTION()
+		void OnContinueButtonClicked();
+
+	UFUNCTION()
+		void OnRestartButtonClicked();
+
+	UFUNCTION()
+		void OnExitButtonClicked();
+
 	UPanelWidget* Panel;
 
 	UTexture2D* TextureButton;
-
-	UPROPERTY(EditAnywhere)
-		UImage* ImageButtonContinue;
-
-	UPROPERTY(EditAnywhere)
-		UImage* ImageButtonRestart;
-
-	UPROPERTY(EditAnywhere)
-		UImage* ImageButtonExit;
 
 	UPROPERTY(EditAnywhere)
 		UButton* ButtonContinue;
@@ -43,14 +44,30 @@ private:
 	UPROPERTY(EditAnywhere)
 		UButton* ButtonExit;
 
-	UFUNCTION()
-		void OnContinueButtonClicked();
-
-	UFUNCTION()
-		void OnRestartButtonClicked();
-
-	UFUNCTION()
-		void OnExitButtonClicked();
-
+	UPROPERTY(EditAnywhere)
+		UCanvasPanel* HorizontalBoxContinue;
 	
+	UPROPERTY(EditAnywhere)
+		UCanvasPanel* HorizontalBoxRestart;
+
+	UPROPERTY(EditAnywhere)
+		UCanvasPanel* HorizontalBoxExit;
+
+	UPROPERTY(EditAnywhere)
+		UImage* ImageButtonContinue;
+
+	UPROPERTY(EditAnywhere)
+		UImage* ImageButtonRestart;
+
+	UPROPERTY(EditAnywhere)
+		UImage* ImageButtonExit;	
+
+	UPROPERTY(EditAnywhere)
+		UTextBlock* TextBoxContinue;
+
+	UPROPERTY(EditAnywhere)
+		UTextBlock* TextBoxRestart;
+
+	UPROPERTY(EditAnywhere)
+		UTextBlock* TextBoxExit;
 };
