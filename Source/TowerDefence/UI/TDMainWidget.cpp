@@ -103,6 +103,21 @@ bool UTDMainWidget::Initialize() {
 
 				ButtonMenu->OnClicked.AddDynamic(this, &UTDMainWidget::OnMenuButtonClick);
 			}
+
+			GameEndMessage = WidgetTree->ConstructWidget<UTextBlock>();
+			if (GameEndMessage) {
+				Panel->AddChild(GameEndMessage);
+				GameEndMessage->SetVisibility(ESlateVisibility::Hidden);
+
+				GameEndMessage->SetText(FText::FromString(""));
+				GameEndMessage->Font.Size = 24;
+				GameEndMessage->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
+
+				UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(GameEndMessage->Slot);
+				if (Slot) {
+					Slot->SetAnchors(FAnchors(0.45f, 0.35));
+				}
+			}
 		}		
 	}
 
@@ -120,4 +135,10 @@ void UTDMainWidget::SetGold(const unsigned & Gold) {
 
 void UTDMainWidget::SetWave(const unsigned & Wave) {
 	TextBoxCurrentWave->SetText(FText::FromString(FString("Wave : ") + FString::FromInt(Wave)));
+}
+
+void UTDMainWidget::ShowEndMessage(const FString& Message){
+	GameEndMessage->SetVisibility(ESlateVisibility::Visible);
+
+	GameEndMessage->SetText(FText::FromString(Message));
 }

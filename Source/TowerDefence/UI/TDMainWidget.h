@@ -27,6 +27,7 @@ public:
 
 	void SetWave(const unsigned &);
 
+	void ShowEndMessage(const FString& Message);
 
 private:
 	UFUNCTION()
@@ -46,6 +47,9 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		UImage* ImagePause;
+
+	UPROPERTY(EditAnywhere)
+		UTextBlock* GameEndMessage;
 
 	UPROPERTY(EditAnywhere)
 		UTextBlock* TextBoxGold;

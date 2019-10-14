@@ -133,6 +133,7 @@ void ATowerDefenceGameModeBase::Tick(float DeltaTime) {
 void ATowerDefenceGameModeBase::BreweryDestroyed(){
 	bGameFinished = true;
 	HUD->ShowPauseMenu();
+	HUD->ShowGameEndMessage(FString("You Lose"));
 }
 
 const bool& ATowerDefenceGameModeBase::GetGameFinished(){
@@ -154,6 +155,7 @@ void ATowerDefenceGameModeBase::OnDwarfDestroyed(AActor* Actor){
 		if (CurrentWave == SpawnArray.Num()) {
 			bGameFinished = true;
 			HUD->ShowPauseMenu();
+			HUD->ShowGameEndMessage(FString("Victory!"));
 		}
 	}
 }

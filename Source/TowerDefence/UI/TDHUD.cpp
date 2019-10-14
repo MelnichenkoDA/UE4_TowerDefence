@@ -84,6 +84,10 @@ void ATDHUD::CloseCurrentMenu() {
 	}	
 }
 
+void ATDHUD::ShowGameEndMessage(const FString& Message){
+	MainWidget->ShowEndMessage(Message);
+}
+
 void ATDHUD::CloseConstructionMenu() {
 	SelectedActor = nullptr;
 	BuildingsWidget->RemoveFromViewport();

@@ -36,6 +36,7 @@ public:
 
 	void CloseCurrentMenu();		
 
+	void ShowGameEndMessage(const FString& Message);
 private:
 	void CloseConstructionMenu();
 
