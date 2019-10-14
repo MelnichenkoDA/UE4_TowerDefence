@@ -33,7 +33,7 @@ void ATDSpectatorPawn::BeginPlay() {
 	Super::BeginPlay();
 
 	SetActorRotation(FRotator(-45.0f, -90.0f, 0.0f));	
-	SetActorLocation(FVector(-500.0, 1000.0f, 900.0f));
+	SetActorLocation(FVector(-500.0, 1000.0f, 800.0f));
 }
 
 void ATDSpectatorPawn::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
