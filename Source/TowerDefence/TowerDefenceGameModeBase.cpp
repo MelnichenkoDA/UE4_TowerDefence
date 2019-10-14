@@ -19,7 +19,7 @@ ATowerDefenceGameModeBase::ATowerDefenceGameModeBase() {
 	SpawnArray.Add(TArray<int32>{9, 4, 2});
 	SpawnArray.Add(TArray<int32>{9, 5, 3});
 
-	SpawnLocation = FVector(1300.0f, 900.0f, 300.0f);
+	SpawnLocation = FVector(1300.0f, 900.0f, 280.0f);
 
 	SpawnRotation = FRotator(0.0f, 0.0f, 0.0f);
 	

@@ -4,13 +4,13 @@
 #include "TDDwarf.h"
 
 // Sets default values
-ATDDwarf::ATDDwarf()
-{
+ATDDwarf::ATDDwarf(){
  	// Set this actor to call Tick() every frame.  You can turn this off to improve performance if you don't need it.
 	PrimaryActorTick.bCanEverTick = true;
 
 	RootComponent = GetCapsuleComponent();
-	GetCapsuleComponent()->SetCapsuleHalfHeight(0.44f, true);
+	GetCapsuleComponent()->SetCapsuleHalfHeight(60.f, true);
+	GetCapsuleComponent()->SetCapsuleRadius(45.f, true);
 	GetCapsuleComponent()->OnComponentBeginOverlap.AddDynamic(this, &ATDDwarf::OnCollisionOverlapBegin);
 
 	static ConstructorHelpers::FObjectFinder<UAnimSequence> AnimationDeathAsset(TEXT("AnimSequence'/Game/Characters/DwarfGrunt/Anims/Death2.Death2'"));
@@ -110,6 +110,7 @@ void ATDDwarf::Tick(float DeltaTime){
 				NewLocation += Direction * MovementSpeed * DeltaTime;
 				break;
 			}
+			NewLocation.Z = GetActorLocation().Z;
 			SetActorLocation(NewLocation);
 		}
 		
@@ -167,22 +168,45 @@ void ATDDwarf::Initialize(ATDWayPoint* TargetPosition, DwarfType Type){
 	CurrentTarget = TargetPosition;
 	SetCurrentPoint();
 
+	FVector NewLocation = GetActorLocation();
+
 	switch (Type) {
 	case DwarfType::Little : 
 		SkeletalComponent->SetWorldScale3D(FVector(0.5f, 0.5f, 0.5f));
+		
+		NewLocation.Z = 270;
+		SetActorLocation(NewLocation);
+
+		SkeletalComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -30.0f));
+
+		GetCapsuleComponent()->SetCapsuleHalfHeight(34.f, true);
+		GetCapsuleComponent()->SetCapsuleRadius(30.f, true);
+
 		Award = DwarfAwardType::LittleAward;
 		MovementSpeed = DwarfMovementSpeedType::LittleSpeed;
 		HealthPoints = DwarfHealthType::LittleHP;
 		Damage = DwarfDamageType::LittleDamage;
 		break;
 	case DwarfType::Middle :		
+		SkeletalComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -50.0f));
+
+		GetCapsuleComponent()->SetCapsuleHalfHeight(0.44f, true);
 		Award = DwarfAwardType::MiddleAward;
 		MovementSpeed = DwarfMovementSpeedType::MiddleSpeed;
 		HealthPoints = DwarfHealthType::MiddleHP;
 		Damage = DwarfDamageType::MiddleDamage;
 		break;
 	case DwarfType::Big:
-		SkeletalComponent->SetWorldScale3D(FVector(1.5f, 1.5f, 1.5f));
+		SkeletalComponent->SetWorldScale3D(FVector(0.5f, 0.5f, 0.5f));
+		
+		NewLocation.Z = 320;
+		SetActorLocation(NewLocation);
+
+		SkeletalComponent->SetRelativeLocation(FVector(0.0f, 0.0f, -80.0f));
+
+		GetCapsuleComponent()->SetCapsuleHalfHeight(90.f, true);
+		GetCapsuleComponent()->SetCapsuleRadius(60.f, true);
+		
 		Award = DwarfAwardType::BigAward;
 		MovementSpeed = DwarfMovementSpeedType::BigSpeed;
 		HealthPoints = DwarfHealthType::BigHP;
