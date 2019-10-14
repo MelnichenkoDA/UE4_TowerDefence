@@ -93,11 +93,26 @@ void ATDCannonTurret::Tick(float DeltaTime){
 		if (CurrentTarget) {
 			FVector Direction = SkeletalMeshCannon->GetComponentLocation() - CurrentTarget->GetActorLocation();
 			FRotator Rot = FRotationMatrix::MakeFromX(Direction).Rotator();
-			Rot.Yaw += 180.0f;
+
+			if (GEngine) {
+				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, GetActorRotation().Vector().ToString());
+			}
+
+			switch (static_cast<int>(FMath::RoundHalfFromZero(GetActorRotation().Vector().X))) {
+			case 1:
+				Rot.Yaw += 180;
+				break;
+			case 0:
+				switch (static_cast<int>(FMath::RoundHalfFromZero(GetActorRotation().Vector().Y))) {
+				case 1:
+					Rot.Yaw += 90.0f;
+					break;
+				case -1:
+					Rot.Yaw -= 90.0f;
+					break;
+				}
+			}
 			SkeletalMeshCannon->SetRelativeRotation(Rot);
-
-
-
 			if (ReloadCurrentTime <= 0) {
 				if (CurrentTarget->IsAlive()) {
 					FActorSpawnParameters SpawnParams;
