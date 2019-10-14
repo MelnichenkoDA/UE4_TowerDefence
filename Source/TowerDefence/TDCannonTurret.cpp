@@ -92,11 +92,7 @@ void ATDCannonTurret::Tick(float DeltaTime){
 
 		if (CurrentTarget) {
 			FVector Direction = SkeletalMeshCannon->GetComponentLocation() - CurrentTarget->GetActorLocation();
-			FRotator Rot = FRotationMatrix::MakeFromX(Direction).Rotator();
-
-			if (GEngine) {
-				GEngine->AddOnScreenDebugMessage(-1, 5, FColor::Red, GetActorRotation().Vector().ToString());
-			}
+			FRotator Rot = FRotationMatrix::MakeFromX(Direction).Rotator();		
 
 			switch (static_cast<int>(FMath::RoundHalfFromZero(GetActorRotation().Vector().X))) {
 			case 1:
