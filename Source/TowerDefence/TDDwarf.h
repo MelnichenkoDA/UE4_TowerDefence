@@ -74,7 +74,9 @@ private:
 	UPROPERTY(EditAnywhere)
 		float Damage;	
 
-	float ContiniusDamageTimer;
+	UPROPERTY(EditAnywhere)
+		float ContiniusDamageTimer;
+
 	float ContiniusDamage;
 
 	float DestroyingTimer;
@@ -82,7 +84,6 @@ private:
 	unsigned CurrentPointIndex;
 	unsigned Award;
 
-	bool bIsUnderFlame;
 	bool bIsAlive;
 
 	

@@ -117,11 +117,9 @@ void ATDDwarf::Tick(float DeltaTime){
 		if (ContiniusDamageTimer > 0) {			
 			HealthPoints -= ContiniusDamage * DeltaTime;
 			
-			if (!bIsUnderFlame) {
-				ContiniusDamageTimer -= DeltaTime;
-				if (ContiniusDamageTimer <= 0) {
-					ParticleComponentBurn->Deactivate();
-				}
+			ContiniusDamageTimer -= DeltaTime;
+			if (ContiniusDamageTimer <= 0){
+				ParticleComponentBurn->Deactivate();
 			}
 		}
 	}	
@@ -130,24 +128,16 @@ void ATDDwarf::Tick(float DeltaTime){
 float ATDDwarf::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser){
 	FString DamageTypeName;
 	DamageEvent.DamageTypeClass.Get()->GetName(DamageTypeName);
-	if (DamageTypeName == "TDDamageTypeFlame") {
-		if (DamageAmount > 0) {
-			bIsUnderFlame = true;
-			if (ContiniusDamageTimer == 0) {
-				UTDDamageTypeFlame* DamageType = Cast<UTDDamageTypeFlame>(DamageEvent.DamageTypeClass.GetDefaultObject());
-				if (DamageType) {
-					DamageType->InitDamage(ContiniusDamageTimer);
-					ContiniusDamage = DamageAmount;
-				}
-				if (!ParticleComponentBurn->bIsActive) {
-					ParticleComponentBurn->Activate();
-				}
-			}			
-		} else {
-			bIsUnderFlame = false;	
-			DamageAmount = -DamageAmount;
-		} 	
-	} 
+	if (DamageTypeName == "TDDamageTypeFlame") {		
+		UTDDamageTypeFlame* DamageType = Cast<UTDDamageTypeFlame>(DamageEvent.DamageTypeClass.GetDefaultObject());
+		if (DamageType) {
+			DamageType->InitDamage(ContiniusDamageTimer);
+			ContiniusDamage = DamageAmount;
+		}
+		if (!ParticleComponentBurn->bIsActive) {
+			ParticleComponentBurn->Activate();
+		}
+	}
 	if (DamageTypeName == "TDDamageTypeCannon") {
 		if (!ParticleComponentBlood->bIsActive) {
 			ParticleComponentBlood->Activate();

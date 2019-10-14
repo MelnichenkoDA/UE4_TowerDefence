@@ -84,6 +84,6 @@ void ATDFlamethrowerTurret::OnFlameEndOverlap(UPrimitiveComponent* OverlappedCom
 	FDamageEvent DamageEvent;
 	DamageEvent.DamageTypeClass = UTDDamageTypeFlame::StaticClass();
 	if (OtherActor) {
-		OtherActor->TakeDamage(-Damage, DamageEvent, nullptr, this);
+		OtherActor->TakeDamage(Damage, DamageEvent, nullptr, this);
 	}
 }
