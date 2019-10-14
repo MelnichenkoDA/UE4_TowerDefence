@@ -8,10 +8,9 @@ ATDSpectatorPawn::ATDSpectatorPawn() {
 
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	if (Camera) {
-		SetRootComponent(Camera);		
+		SetRootComponent(Camera);	
+		Camera->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
 	}	
-
-	SetActorRotation(FRotator(-45.0f, -90.0f, 0.0f));
 
 	BoxComponentCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));
 	if (BoxComponentCollision) {
@@ -33,8 +32,8 @@ ATDSpectatorPawn::ATDSpectatorPawn() {
 void ATDSpectatorPawn::BeginPlay() {
 	Super::BeginPlay();
 
-	SetActorLocation(FVector(-500.0, 1000.0f, 1500.0f));
-	SetActorRotation(FRotator(0.0f, -90.0f, 0.0f));	
+	SetActorRotation(FRotator(-45.0f, -90.0f, 0.0f));	
+	SetActorLocation(FVector(-500.0, 1000.0f, 900.0f));
 }
 
 void ATDSpectatorPawn::BeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp,
@@ -74,19 +73,10 @@ void ATDSpectatorPawn::Tick(float DeltaTime) {
 		FVector NewLocation = GetActorLocation();
 		NewLocation += GetActorForwardVector() * MovementInput.Y * DeltaTime;
 		NewLocation += GetActorRightVector() * MovementInput.X * DeltaTime;
+		NewLocation.Z = GetActorLocation().Z;
 		SetActorLocation(NewLocation);
 		MovementInput = FVector(0.0f, 0.0f, 0.0f);
 	}
-}
-
-void ATDSpectatorPawn::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) {
-	Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-	PlayerInputComponent->BindAxis("MoveForward", this, &ATDSpectatorPawn::MoveForward);
-	PlayerInputComponent->BindAxis("MoveRight", this, &ATDSpectatorPawn::MoveRight);
-
-	PlayerInputComponent->BindAction("Escape", IE_Pressed, this, &ATDSpectatorPawn::OnClickEscape);
-	
 }
 
 void ATDSpectatorPawn::MoveForward(float AxisValue) {
@@ -105,8 +95,4 @@ void ATDSpectatorPawn::MoveRight(float AxisValue) {
 	if (AxisValue < 0 && bCanMoveLeft) {
 		MovementInput.X = FMath::Clamp<float>(AxisValue, -1.0f, 1.0f);
 	}
-}
-
-void ATDSpectatorPawn::OnClickEscape() {
-
 }

@@ -20,12 +20,8 @@ public:
 
 	virtual void Tick(float DeltaTime) override;
 
-	virtual void SetupPlayerInputComponent(class UInputComponent* PlayerInputComponent) override;
-
-	void MoveForward(float AxisValue);
-	void MoveRight(float AxisValue);	
-
-	void OnClickEscape();
+	virtual void MoveForward(float Value) override;
+	virtual void MoveRight(float Value) override;
 
 protected:
 	virtual void BeginPlay() override;

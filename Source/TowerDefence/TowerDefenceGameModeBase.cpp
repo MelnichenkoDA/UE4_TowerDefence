@@ -6,6 +6,7 @@
 ATowerDefenceGameModeBase::ATowerDefenceGameModeBase() {
 	PrimaryActorTick.bStartWithTickEnabled = true;
 	PrimaryActorTick.bCanEverTick = true;
+
 	PlayerControllerClass = ATDPlayerController::StaticClass();
 	DefaultPawnClass = ATDSpectatorPawn::StaticClass();
 	HUDClass = ATDHUD::StaticClass();
