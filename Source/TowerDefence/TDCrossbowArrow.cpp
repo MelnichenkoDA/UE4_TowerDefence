@@ -99,8 +99,5 @@ void ATDCrossbowArrow::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActo
 		DamageEvent.DamageTypeClass = UTDDamageTypeArrow::StaticClass();
 		OtherActor->TakeDamage(Damage, DamageEvent, nullptr, nullptr);
 	}
-	else {
-		Destroy();
-	}
 }
 

@@ -9,6 +9,6 @@ UTDDamageTypeFlame::UTDDamageTypeFlame() {
 	
 }
 
-void UTDDamageTypeFlame::InitDamage(float& Timer){
+void UTDDamageTypeFlame::InitDamage(float& Timer){	
 	Timer = this->Timer;
 }

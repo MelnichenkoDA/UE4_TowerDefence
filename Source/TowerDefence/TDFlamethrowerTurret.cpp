@@ -31,7 +31,8 @@ ATDFlamethrowerTurret::ATDFlamethrowerTurret()
 	if (CollisionComponent) {
 		CollisionComponent->AttachTo(RootComponent);
 		CollisionComponent->SetGenerateOverlapEvents(false);
-		CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ATDFlamethrowerTurret::OnFlameBeginOverlap);		
+		CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ATDFlamethrowerTurret::OnFlameBeginOverlap);	
+		CollisionComponent->OnComponentBeginOverlap.AddDynamic(this, &ATDFlamethrowerTurret::OnFlameEndOverlap);
 		CollisionComponent->SetRelativeLocation(FVector(0.0f, 400.0f, 50.0f));
 		CollisionComponent->SetRelativeScale3D(FVector(3.5, 3.5, 1.0f));
 	}

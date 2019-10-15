@@ -128,7 +128,7 @@ void ATDDwarf::Tick(float DeltaTime){
 float ATDDwarf::TakeDamage(float DamageAmount, FDamageEvent const& DamageEvent, AController* EventInstigator, AActor* DamageCauser){
 	FString DamageTypeName;
 	DamageEvent.DamageTypeClass.Get()->GetName(DamageTypeName);
-	if (DamageTypeName == "TDDamageTypeFlame") {		
+	if (DamageTypeName == "TDDamageTypeFlame") {	
 		UTDDamageTypeFlame* DamageType = Cast<UTDDamageTypeFlame>(DamageEvent.DamageTypeClass.GetDefaultObject());
 		if (DamageType) {
 			DamageType->InitDamage(ContiniusDamageTimer);
@@ -187,7 +187,7 @@ void ATDDwarf::Initialize(ATDWayPoint* TargetPosition, DwarfType Type){
 		Damage = DwarfDamageType::MiddleDamage;
 		break;
 	case DwarfType::Big:
-		SkeletalComponent->SetWorldScale3D(FVector(0.5f, 0.5f, 0.5f));
+		SkeletalComponent->SetWorldScale3D(FVector(1.5f, 1.5f, 1.5f));
 		
 		NewLocation.Z = 320;
 		SetActorLocation(NewLocation);
