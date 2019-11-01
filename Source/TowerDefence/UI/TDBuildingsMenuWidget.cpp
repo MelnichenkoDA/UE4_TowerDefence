@@ -177,7 +177,7 @@ void UTDBuildingsMenuWidget::InitButtonCrossbow(){
 		}
 	}
 
-	ButtonCannonTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnCannonButtonClicked);
+	ButtonCrossbowTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnCannonButtonClicked);
 }
 
 void UTDBuildingsMenuWidget::SetCurrentTurret(AActor * Turret) {
