@@ -159,7 +159,7 @@ void UTDBuildingsMenuWidget::InitButtonCrossbow(){
 		if (ImageCrossbowTurret) {
 			CanvasPanelCrossbow->AddChild(ImageCrossbowTurret);
 
-			ImageCrossbowTurret->SetBrushFromTexture(TextureCannon);
+			ImageCrossbowTurret->SetBrushFromTexture(TextureCrossbow);
 			ImageCrossbowTurret->SetRenderScale(FVector2D(0.9, 3.2));
 			ImageCrossbowTurret->SetRenderTranslation(FVector2D(5, 0));
 		}
@@ -177,7 +177,7 @@ void UTDBuildingsMenuWidget::InitButtonCrossbow(){
 		}
 	}
 
-	ButtonCrossbowTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnCannonButtonClicked);
+	ButtonCrossbowTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnCrossbowButtonClicked);
 }
 
 void UTDBuildingsMenuWidget::SetCurrentTurret(AActor * Turret) {
