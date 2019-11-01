@@ -31,6 +31,10 @@ private:
 	UFUNCTION()
 		void OnExitButtonClicked();
 
+	void InitButtonContinue();
+	void InitButtonRestart();
+	void InitButtonExit();
+
 	UPanelWidget* Panel;
 
 	UTexture2D* TextureButton;
