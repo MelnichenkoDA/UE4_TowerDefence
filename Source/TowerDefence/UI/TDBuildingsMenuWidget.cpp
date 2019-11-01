@@ -44,89 +44,140 @@ bool UTDBuildingsMenuWidget::Initialize(){
 			
 			ButtonFlameTurret = WidgetTree->ConstructWidget<UButton>();
 			if (ButtonFlameTurret){
-				Panel->AddChild(ButtonFlameTurret);
-
-				ButtonFlameTurret->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);				
-				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonFlameTurret->Slot);
-				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(100, 100));
-					ButtonSlot->SetAnchors(FAnchors(0.84, 0.9));
-				}
-
-				ImageFlameTurret = WidgetTree->ConstructWidget<UImage>();
-				if (ImageFlameTurret) {
-					ImageFlameTurret->SetBrushFromTexture(TextureFlame);
-					ButtonFlameTurret->AddChild(ImageFlameTurret);
-					UButtonSlot* ImageSlot = Cast<UButtonSlot>(ImageFlameTurret->Slot);
-
-					if (ImageSlot) {
-						ImageSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-						ImageSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-						ImageSlot->SetPadding(FMargin(0));
-					}
-				}
-
-				ButtonFlameTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnFlameButtonCLicked);				
+				InitButtonFlame();
 			}
 
 			ButtonCannonTurret = WidgetTree->ConstructWidget<UButton>();
 			if (ButtonCannonTurret) {
-				Panel->AddChild(ButtonCannonTurret);
-
-				ButtonCannonTurret->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);				
-				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonCannonTurret->Slot);
-				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(100, 100));
-					ButtonSlot->SetAnchors(FAnchors(.89, .9));
-				}
-
-				ImageCanonTurret = WidgetTree->ConstructWidget<UImage>();
-				if (ImageCanonTurret) {
-					ImageCanonTurret->SetBrushFromTexture(TextureCannon);
-					ButtonCannonTurret->AddChild(ImageCanonTurret);
-					UButtonSlot* ImageSlot = Cast<UButtonSlot>(ImageCanonTurret->Slot);
-
-					if (ImageSlot) {
-						ImageSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-						ImageSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-						ImageSlot->SetPadding(FMargin(0));
-					}
-				}
-
-				ButtonCannonTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnCannonButtonClicked);
+				InitButtonCannon();
 			}
 
 			ButtonCrossbowTurret = WidgetTree->ConstructWidget<UButton>();
 			if (ButtonCrossbowTurret) {
-				Panel->AddChild(ButtonCrossbowTurret);
-				ButtonCrossbowTurret->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
-
-				UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonCrossbowTurret->Slot);
-				if (ButtonSlot) {
-					ButtonSlot->SetSize(FVector2D(100, 100));
-					ButtonSlot->SetAnchors(FAnchors(.94, .9));
-				}
-
-				ImageCrossbowTurret = WidgetTree->ConstructWidget<UImage>();
-				if (ImageCrossbowTurret) {
-					ImageCrossbowTurret->SetBrushFromTexture(TextureCrossbow);
-					ButtonCrossbowTurret->AddChild(ImageCrossbowTurret);
-					UButtonSlot* ImageSlot = Cast<UButtonSlot>(ImageCrossbowTurret->Slot);
-
-					if (ImageSlot) {
-						ImageSlot->SetVerticalAlignment(EVerticalAlignment::VAlign_Fill);
-						ImageSlot->SetHorizontalAlignment(EHorizontalAlignment::HAlign_Fill);
-						ImageSlot->SetPadding(FMargin(0));
-					}
-				}
-
-				ButtonCrossbowTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnCrossbowButtonClicked);
+				InitButtonCrossbow();
 			}
 
 		}
 	}
 	
 	return true;
+}
+
+void UTDBuildingsMenuWidget::InitButtonFlame() {
+	Panel->AddChild(ButtonFlameTurret);
+
+	ButtonFlameTurret->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
+	UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonFlameTurret->Slot);
+	if (ButtonSlot) {
+		ButtonSlot->SetSize(FVector2D(100, 100));
+		ButtonSlot->SetAnchors(FAnchors(0.84, 0.9));
+	}
+
+	CanvasPanelFlame = WidgetTree->ConstructWidget<UCanvasPanel>();
+	if (CanvasPanelFlame) {
+		ButtonFlameTurret->AddChild(CanvasPanelFlame);
+
+		ImageFlameTurret = WidgetTree->ConstructWidget<UImage>();
+		if (ImageFlameTurret) {
+			CanvasPanelFlame->AddChild(ImageFlameTurret);
+
+			ImageFlameTurret->SetBrushFromTexture(TextureFlame);
+			ImageFlameTurret->SetRenderScale(FVector2D(0.9, 3.2));
+			ImageFlameTurret->SetRenderTranslation(FVector2D(-5, 0));
+		}
+
+		TextFlameCost = WidgetTree->ConstructWidget<UTextBlock>();
+		if (TextFlameCost) {
+			CanvasPanelFlame->AddChild(TextFlameCost);
+
+			TextFlameCost->SetVisibility(ESlateVisibility::Visible);
+			TextFlameCost->SetRenderTranslation(FVector2D(35.0f, 40.0f));
+			TextFlameCost->SetText(FText::FromString(FString::FromInt(TurretsCost::FlamethrowerTurretCost)));
+
+			TextFlameCost->Font.Size = 12;
+			TextFlameCost->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
+		}
+	}
+
+	ButtonFlameTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnFlameButtonCLicked);
+}
+
+void UTDBuildingsMenuWidget::InitButtonCannon(){
+	Panel->AddChild(ButtonCannonTurret);
+
+	ButtonCannonTurret->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
+	UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonCannonTurret->Slot);
+	if (ButtonSlot) {
+		ButtonSlot->SetSize(FVector2D(100, 100));
+		ButtonSlot->SetAnchors(FAnchors(0.885, 0.9));
+	}
+
+	CanvasPanelCannon = WidgetTree->ConstructWidget<UCanvasPanel>();
+	if (CanvasPanelCannon) {
+		ButtonCannonTurret->AddChild(CanvasPanelCannon);
+
+		ImageCanonTurret = WidgetTree->ConstructWidget<UImage>();
+		if (ImageCanonTurret) {
+			CanvasPanelCannon->AddChild(ImageCanonTurret);
+
+			ImageCanonTurret->SetBrushFromTexture(TextureCannon);
+			ImageCanonTurret->SetRenderScale(FVector2D(0.9, 3.2));
+			ImageCanonTurret->SetRenderTranslation(FVector2D(0, 0));
+		}
+
+		TextCannonCost = WidgetTree->ConstructWidget<UTextBlock>();
+		if (TextCannonCost) {
+			CanvasPanelCannon->AddChild(TextCannonCost);
+
+			TextCannonCost->SetVisibility(ESlateVisibility::Visible);
+			TextCannonCost->SetRenderTranslation(FVector2D(35.0f, 40.0f));
+			TextCannonCost->SetText(FText::FromString(FString::FromInt(TurretsCost::CannonTurretCost)));
+
+			TextCannonCost->Font.Size = 12;
+			TextCannonCost->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
+		}
+	}
+
+	ButtonCannonTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnCannonButtonClicked);
+}
+
+void UTDBuildingsMenuWidget::InitButtonCrossbow(){
+	Panel->AddChild(ButtonCrossbowTurret);
+
+	ButtonCrossbowTurret->BackgroundColor = FLinearColor(0.f, 0.f, 0.f, 0.0f);
+	UCanvasPanelSlot* ButtonSlot = Cast<UCanvasPanelSlot>(ButtonCrossbowTurret->Slot);
+	if (ButtonSlot) {
+		ButtonSlot->SetSize(FVector2D(100, 100));
+		ButtonSlot->SetAnchors(FAnchors(0.93, 0.9));
+	}
+
+	CanvasPanelCrossbow = WidgetTree->ConstructWidget<UCanvasPanel>();
+	if (CanvasPanelCrossbow) {
+		ButtonCrossbowTurret->AddChild(CanvasPanelCrossbow);
+
+		ImageCrossbowTurret = WidgetTree->ConstructWidget<UImage>();
+		if (ImageCrossbowTurret) {
+			CanvasPanelCrossbow->AddChild(ImageCrossbowTurret);
+
+			ImageCrossbowTurret->SetBrushFromTexture(TextureCannon);
+			ImageCrossbowTurret->SetRenderScale(FVector2D(0.9, 3.2));
+			ImageCrossbowTurret->SetRenderTranslation(FVector2D(5, 0));
+		}
+
+		TextCrossbowCost = WidgetTree->ConstructWidget<UTextBlock>();
+		if (TextCrossbowCost) {
+			CanvasPanelCrossbow->AddChild(TextCrossbowCost);
+
+			TextCrossbowCost->SetVisibility(ESlateVisibility::Visible);
+			TextCrossbowCost->SetRenderTranslation(FVector2D(35.0f, 40.0f));
+			TextCrossbowCost->SetText(FText::FromString(FString::FromInt(TurretsCost::CrossbowTurretCost)));
+
+			TextCrossbowCost->Font.Size = 12;
+			TextCrossbowCost->SetColorAndOpacity(FSlateColor(FLinearColor(1.0f, 0.97f, 0.16f, 1.0f)));
+		}
+	}
+
+	ButtonCannonTurret->OnClicked.AddDynamic(this, &UTDBuildingsMenuWidget::OnCannonButtonClicked);
 }
 
 void UTDBuildingsMenuWidget::SetCurrentTurret(AActor * Turret) {
@@ -144,6 +195,8 @@ void UTDBuildingsMenuWidget::OnCannonButtonClicked() {
 void UTDBuildingsMenuWidget::OnCrossbowButtonClicked() {
 	ButtonClicked(TurretsTypes::CrossbowTurret);
 }
+
+
 
 void UTDBuildingsMenuWidget::ButtonClicked(TurretsTypes Type){	
 	ATDEmptyTyrret* Turret = Cast<ATDEmptyTyrret>(CurrentTurret);	

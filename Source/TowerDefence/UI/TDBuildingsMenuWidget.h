@@ -31,6 +31,10 @@ private:
 
 	UFUNCTION()
 		void OnCrossbowButtonClicked();
+	  
+	void InitButtonFlame();
+	void InitButtonCannon();
+	void InitButtonCrossbow();
 
 	void ButtonClicked(TurretsTypes Type);
 
@@ -47,6 +51,24 @@ private:
 	UTexture2D* TextureCrossbow;
 
 	UPROPERTY(EditAnywhere)
+		UButton* ButtonFlameTurret;
+
+	UPROPERTY(EditAnywhere)
+		UButton* ButtonCannonTurret;
+
+	UPROPERTY(EditAnywhere)
+		UButton* ButtonCrossbowTurret;
+
+	UPROPERTY(EditAnywhere)
+		UCanvasPanel* CanvasPanelFlame;
+
+	UPROPERTY(EditAnywhere)
+		UCanvasPanel* CanvasPanelCannon;
+
+	UPROPERTY(EditAnywhere)
+		UCanvasPanel* CanvasPanelCrossbow;
+
+	UPROPERTY(EditAnywhere)
 		UImage* ImageBorder;
 
 	UPROPERTY(EditAnywhere)
@@ -57,15 +79,6 @@ private:
 
 	UPROPERTY(EditAnywhere)
 		UImage* ImageCrossbowTurret;		
-
-	UPROPERTY(EditAnywhere)
-		UButton* ButtonFlameTurret;
-
-	UPROPERTY(EditAnywhere)
-		UButton* ButtonCannonTurret;
-
-	UPROPERTY(EditAnywhere)
-		UButton* ButtonCrossbowTurret;
 
 	UPROPERTY(EditAnywhere)
 		UTextBlock* TextFlameCost;
