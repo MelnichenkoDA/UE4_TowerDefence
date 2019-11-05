@@ -35,14 +35,10 @@ ATDCannonBall::ATDCannonBall()
 			ParticleSystemTail->SetRelativeScale3D(FVector(3.0f, 2.0f, 2.0f));
 		}
 	}
+	
+	MovementSpeed = 100.f;
 
-	TargetPosition;
-
-	Speed = 5.0f;
-
-	LifeTime = 0.5f;
-
-	bInitialized = false;
+	LifeTime = 5.f;
 }
 
 // Called when the game starts or when spawned
@@ -54,12 +50,10 @@ void ATDCannonBall::BeginPlay() {
 void ATDCannonBall::Tick(float DeltaTime) {
 	Super::Tick(DeltaTime);
 
-	if (bInitialized) {		
-		SetActorLocation(FMath::Lerp(GetActorLocation(), TargetPosition, Speed * DeltaTime));
-	}
-
 	if (LifeTime >= 0) {
 		LifeTime -= DeltaTime;
+
+		SetActorLocation(GetActorLocation() + DeltaTime * MovementSpeed * DirectionVector);
 	} else {
 		Destroy();
 	}
@@ -67,14 +61,15 @@ void ATDCannonBall::Tick(float DeltaTime) {
 }
 
 void ATDCannonBall::Initialize(const FVector& TargetPosition, const float& Damage) {
-	FVector Direction = StaticMeshBall->GetComponentLocation() - TargetPosition;
-	FRotator Rot = FRotationMatrix::MakeFromX(Direction).Rotator();
-	Rot.Yaw += 180.0f;
+	DirectionVector = TargetPosition - StaticMeshBall->GetComponentLocation();
+	FRotator Rot = FRotationMatrix::MakeFromX(DirectionVector).Rotator();
+
+	DirectionVector.Normalize();
+
 	SetActorRotation(Rot);
 
 	this->TargetPosition = TargetPosition;
 	this->Damage = Damage;
-	bInitialized = true;
 }
 
 void ATDCannonBall::OnBeginOverlap(UPrimitiveComponent* OverlappedComp, AActor* OtherActor, UPrimitiveComponent* OtherComp, 

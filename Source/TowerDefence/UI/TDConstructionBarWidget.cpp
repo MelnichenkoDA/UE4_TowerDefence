@@ -36,28 +36,36 @@ bool UTDConstructionBarWidget::Initialize(){
 }
 
 void UTDConstructionBarWidget::NativeTick(const FGeometry& MyGeometry, float DeltaTime){
-	if (CurrentTime <= 0) {
-		*bFinished = true;
-		return;
-	}
-	
-	if (!(*bFinished)) {
-		CurrentTime -= DeltaTime;	
-		
-		FVector2D ScreenLocation;
-		
-		PlayerController->ProjectWorldLocationToScreen(TargetPosition, ScreenLocation);	
+	if (CurrentTime > 0) {
+		ULocalPlayer* Player = PlayerController->GetLocalPlayer();
 
-		ProgressBar->SetPercent(1 - CurrentTime / MaxTime);
+		if (Player != nullptr && Player->ViewportClient != nullptr &&
+			Player->ViewportClient->Viewport != nullptr) {
+			FSceneViewFamilyContext ViewFamily(FSceneViewFamily::ConstructionValues(
+				Player->ViewportClient->Viewport, GetWorld()->Scene, Player->ViewportClient->EngineShowFlags)
+				.SetRealtimeUpdate(true));
 
-		BarSlot->SetPosition(ScreenLocation);
+			FVector ViewLocation;
+			FRotator ViewRotation;
+			FSceneView* SceneView = Player->CalcSceneView(&ViewFamily, ViewLocation, ViewRotation, Player->ViewportClient->Viewport);
 
+			if (SceneView) {				
+				FVector2D ScreenLocation;
+				SceneView->WorldToPixel(TargetPosition, ScreenLocation);
+				
+				ProgressBar->SetPercent(1 - (*CurrentTime) / MaxTime);
+
+				BarSlot->SetPosition(ScreenLocation);
+			}
+		}
 	}
 }
 
-void UTDConstructionBarWidget::SetPositionAndTime(const FVector& Position, const float& Time, bool* bConstructed){
+void UTDConstructionBarWidget::SetPositionAndTime(const FVector & Position, const float* Time){
 	TargetPosition = Position;
-	MaxTime = CurrentTime = Time;
+	MaxTime = *Time;
+
+	CurrentTime = Time;
 	
 	BarSlot = Cast<UCanvasPanelSlot>(ProgressBar->Slot);
 	PlayerController = Cast<const APlayerController>(GetWorld()->GetFirstPlayerController());
@@ -65,7 +73,5 @@ void UTDConstructionBarWidget::SetPositionAndTime(const FVector& Position, const
 		ProgressBar->SetVisibility(ESlateVisibility::Visible);		
 		BarSlot->SetAnchors(FAnchors(0.0f, 0.0f));
 	}
-	
-	bFinished = bConstructed;
 	
 }

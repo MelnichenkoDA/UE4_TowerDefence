@@ -60,5 +60,7 @@ private:
 	UPROPERTY(EditAnywhere)
 		float ArrowLifeTime;
 
+	float ConstructionTimer;
+
 	bool bConstructed;
 };

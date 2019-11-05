@@ -58,6 +58,8 @@ ATDCrossbowTurret::ATDCrossbowTurret()
 
 	ArrowLifeTime = 5.0f;
 
+	ConstructionTimer = 0.0f;
+
 	bConstructed = false;
 }
 
@@ -67,13 +69,22 @@ void ATDCrossbowTurret::BeginPlay(){
 }
 
 void ATDCrossbowTurret::Initialize(const float& Time) {
+	ConstructionTimer = Time;
+
 	ConstructionBarWidget->AddToViewport();
-	ConstructionBarWidget->SetPositionAndTime(GetActorLocation(), Time, &bConstructed);
+	ConstructionBarWidget->SetPositionAndTime(GetActorLocation(), &ConstructionTimer);
 }
 
 // Called every frame
 void ATDCrossbowTurret::Tick(float DeltaTime){
 	Super::Tick(DeltaTime);
+
+	if (!bConstructed && ConstructionTimer > 0) {
+		ConstructionTimer -= DeltaTime;
+		if (ConstructionTimer <= 0) {
+			bConstructed = true;
+		}
+	}
 
 	if (bConstructed) {
 		if (ConstructionBarWidget->IsInViewport()) {

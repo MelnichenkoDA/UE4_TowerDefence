@@ -45,12 +45,12 @@ private:
 
 	FVector TargetPosition;
 
-	float Speed;
+	FVector DirectionVector;
+
+	float MovementSpeed;
 
 	float Damage;
 
 	float LifeTime;
-
-	bool bInitialized;
 
 };

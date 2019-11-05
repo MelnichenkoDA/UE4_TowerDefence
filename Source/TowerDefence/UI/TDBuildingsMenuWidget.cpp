@@ -196,10 +196,9 @@ void UTDBuildingsMenuWidget::OnCrossbowButtonClicked() {
 	ButtonClicked(TurretsTypes::CrossbowTurret);
 }
 
-
-
 void UTDBuildingsMenuWidget::ButtonClicked(TurretsTypes Type){	
 	ATDEmptyTyrret* Turret = Cast<ATDEmptyTyrret>(CurrentTurret);	
+
 	if (Turret){
 		if (Turret->StartConstruction(Type)) {
 			Turret->Destroy();

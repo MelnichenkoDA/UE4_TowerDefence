@@ -9,7 +9,7 @@ ATDSpectatorPawn::ATDSpectatorPawn() {
 	Camera = CreateDefaultSubobject<UCameraComponent>(TEXT("Camera"));
 	if (Camera) {
 		SetRootComponent(Camera);	
-		Camera->SetRelativeRotation(FRotator(-45.0f, 0.0f, 0.0f));
+		Camera->SetRelativeRotation(FRotator(0.0f, 0.0f, 0.0f));
 	}	
 
 	BoxComponentCollision = CreateDefaultSubobject<UBoxComponent>(TEXT("Collision"));

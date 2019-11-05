@@ -37,21 +37,34 @@ ATDFlamethrowerTurret::ATDFlamethrowerTurret()
 		CollisionComponent->SetRelativeScale3D(FVector(3.5, 3.5, 1.0f));
 	}
 
+	ParticleComponentCreation = CreateDefaultSubobject<UParticleSystemComponent>(TEXT("ParticleCreation"));
+	if (ParticleComponentCreation) {
+		static ConstructorHelpers::FObjectFinder<UParticleSystem> ParticleAsset(TEXT("ParticleSystem'/Game/Environment/Effects/particles/P_building_creation_01.P_building_creation_01'"));
+		if (ParticleAsset.Succeeded()) {
+			ParticleComponentCreation->SetTemplate(ParticleAsset.Object);
+			ParticleComponentCreation->AttachTo(RootComponent);
+			ParticleComponentCreation->bAutoActivate = true;
+		}
+	}
+
 	ConstructionBarWidget = CreateWidget<UTDConstructionBarWidget>(GetWorld(), UTDConstructionBarWidget::StaticClass());
 
 	Damage = 1.5f;
+
+	ConstructionTimer = 0.0f;
 
 	bConstructed = false;
 }
 
 void ATDFlamethrowerTurret::Initialise(const float& Timer) {	
+	ConstructionTimer = Timer;
+
 	ConstructionBarWidget->AddToViewport();
-	ConstructionBarWidget->SetPositionAndTime(GetActorLocation(), Timer, &bConstructed);
+	ConstructionBarWidget->SetPositionAndTime(GetActorLocation(), &ConstructionTimer);
 }
 
 // Called when the game starts or when spawned
-void ATDFlamethrowerTurret::BeginPlay()
-{
+void ATDFlamethrowerTurret::BeginPlay(){
 	Super::BeginPlay();	
 }
 
@@ -59,6 +72,13 @@ void ATDFlamethrowerTurret::BeginPlay()
 void ATDFlamethrowerTurret::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
+
+	if (!bConstructed && ConstructionTimer > 0.0) {
+		ConstructionTimer -= DeltaTime;
+		if (ConstructionTimer <= 0) {
+			bConstructed = true;
+		}
+	}
 
 	if (bConstructed) {
 		if (ConstructionBarWidget->IsInViewport()) {

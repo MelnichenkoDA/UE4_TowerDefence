@@ -15,7 +15,7 @@ ATDHUD::ATDHUD() {
 }
 
 void ATDHUD::DrawHUD(){
-	Super::DrawHUD();		
+	Super::DrawHUD();	
 }
 
 void ATDHUD::BeginPlay(){

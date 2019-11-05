@@ -20,7 +20,7 @@ ATDCannonTurret::ATDCannonTurret()
 	
 	SkeletalMeshCannon = CreateDefaultSubobject<USkeletalMeshComponent>(TEXT("MeshCannon"));
 	if (SkeletalMeshCannon) {
-		SkeletalMeshCannon->AttachTo(RootComponent);
+		SkeletalMeshCannon->AttachToComponent(RootComponent, FAttachmentTransformRules::KeepRelativeTransform);
 		static ConstructorHelpers::FObjectFinder<USkeletalMesh> CannonMesh(TEXT("SkeletalMesh'/Game/Assets/Meshes/Cannon_Tower_SkelMesh.Cannon_Tower_SkelMesh'"));
 		if (CannonMesh.Succeeded()) {
 			SkeletalMeshCannon->SetSkeletalMesh(CannonMesh.Object);
@@ -59,14 +59,17 @@ ATDCannonTurret::ATDCannonTurret()
 
 	ReloadCurrentTime = 0.0f;
 
+	ConstructionTimer = 0.0f;
+
 	Targets = TArray<AActor*>();
 
 	bConstructed = false;
 }
 
 void ATDCannonTurret::Initiliaze(const float& Timer) {
+	ConstructionTimer = Timer;
 	ConstructionBarWidget->AddToViewport();
-	ConstructionBarWidget->SetPositionAndTime(GetActorLocation(), Timer, &bConstructed);
+	ConstructionBarWidget->SetPositionAndTime(GetActorLocation(), &ConstructionTimer);
 }
 
 // Called when the game starts or when spawned
@@ -77,6 +80,13 @@ void ATDCannonTurret::BeginPlay(){
 // Called every frame
 void ATDCannonTurret::Tick(float DeltaTime){
 	Super::Tick(DeltaTime);
+
+	if (!bConstructed && ConstructionTimer > 0) {
+		ConstructionTimer -= DeltaTime;
+		if (ConstructionTimer <= 0) {
+			bConstructed = true;
+		}
+	}
 
 	if (bConstructed) {
 		if (ConstructionBarWidget->IsInViewport()) {
@@ -91,29 +101,34 @@ void ATDCannonTurret::Tick(float DeltaTime){
 		}
 
 		if (CurrentTarget) {
-			FVector Direction = SkeletalMeshCannon->GetComponentLocation() - CurrentTarget->GetActorLocation();
-			FRotator Rot = FRotationMatrix::MakeFromX(Direction).Rotator();		
+			FVector Direction = CurrentTarget->GetActorLocation() - StaticMeshFoundation->GetComponentLocation();
+			FRotator Rot = FRotationMatrix::MakeFromX(Direction).Rotator();	
 
 			switch (static_cast<int>(FMath::RoundHalfFromZero(GetActorRotation().Vector().X))) {
-			case 1:
+			case -1:
 				Rot.Yaw += 180;
 				break;
 			case 0:
 				switch (static_cast<int>(FMath::RoundHalfFromZero(GetActorRotation().Vector().Y))) {
 				case 1:
-					Rot.Yaw += 90.0f;
+					Rot.Yaw -= 90.0f;
 					break;
 				case -1:
-					Rot.Yaw -= 90.0f;
+					Rot.Yaw += 90.0f;
 					break;
 				}
 			}
+
 			SkeletalMeshCannon->SetRelativeRotation(Rot);
 			if (ReloadCurrentTime <= 0) {
 				if (CurrentTarget->IsAlive()) {
 					FActorSpawnParameters SpawnParams;
 					FTransform SpawnPlace = GetTransform();
-					SpawnPlace.AddToTranslation(Direction - SpawnPlace.GetLocation());
+					
+					Direction.Normalize();
+					Direction *= 100;
+					SpawnPlace.AddToTranslation(FVector(Direction.X, Direction.Y, GetActorLocation().Z + 50.0f));
+
 					ATDCannonBall* Ball = GetWorld()->SpawnActor<ATDCannonBall>(ATDCannonBall::StaticClass(), SpawnPlace, SpawnParams);
 					Ball->Initialize(CurrentTarget->GetActorLocation(), Damage);
 					ReloadCurrentTime = ReloadMaxTime;

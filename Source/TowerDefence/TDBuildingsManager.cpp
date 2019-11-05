@@ -33,7 +33,7 @@ bool ATDBuildingsManager::CheckConstruct(TurretsTypes Type){
 					return true;
 				}
 			}
-			case	 TurretsTypes::CannonTurret: {
+			case TurretsTypes::CannonTurret: {
 				if (GameMode->ChangeGold(TurretsCost::CannonTurretCost, true)) {
 					return true;
 				}

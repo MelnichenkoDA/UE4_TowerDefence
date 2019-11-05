@@ -53,7 +53,7 @@ void ATDEmptyTyrret::OnMouseClick(UPrimitiveComponent* ClickedComp, FKey ButtonP
 
 bool ATDEmptyTyrret::StartConstruction(TurretsTypes Type){
 	ATDBuildingsManager* BuildingsManager = static_cast<ATDBuildingsManager*>(Manager);
-	
+
 	if (BuildingsManager->CheckConstruct(Type)) {
 		BuildingsManager->InitConstruction(Type, GetTransform());
 		ATDHUD* HUD = Cast<ATDHUD>(GetWorld()->GetFirstPlayerController()->GetHUD());

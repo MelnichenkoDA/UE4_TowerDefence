@@ -52,6 +52,10 @@ private:
 	UPROPERTY(EditAnywhere)
 		UBoxComponent* CollisionComponent;
 
+	UParticleSystemComponent* ParticleComponentCreation;
+
+	float ConstructionTimer;
+
 	UPROPERTY(EditAnywhere)
 		float Damage;
 

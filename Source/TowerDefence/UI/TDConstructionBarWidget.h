@@ -23,7 +23,7 @@ public:
 
 	virtual void NativeTick(const FGeometry& MyGeometry, float DeltaTime) override;
 
-	void SetPositionAndTime(const FVector& Position, const float& Time, bool * bConstructed);	
+	void SetPositionAndTime(const FVector& Position, const float* Time);	
 
 private:
 	FVector TargetPosition;
@@ -38,7 +38,5 @@ private:
 	APlayerController const * PlayerController;
 
 	float MaxTime;
-	float CurrentTime;
-
-	bool* bFinished;
+	const float* CurrentTime;
 };

@@ -64,6 +64,8 @@ private:
 	UPROPERTY(EditAnywhere)
 		float ReloadCurrentTime;
 
+	float ConstructionTimer;
+
 	TArray<AActor*> Targets;
 
 	bool bConstructed;
