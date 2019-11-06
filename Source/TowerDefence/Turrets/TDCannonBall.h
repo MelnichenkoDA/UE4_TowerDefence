@@ -5,7 +5,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "Components/SphereComponent.h"
-#include "TDDamageTypeCannon.h"
+#include "DamageTypes/TDDamageTypeCannon.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "TDCannonBall.generated.h"
 

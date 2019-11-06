@@ -6,10 +6,10 @@
 #include "GameFramework/Actor.h"
 #include "TDBuildingsTypes.hpp"
 #include "TowerDefenceGameModeBase.h"
-#include "TDEmptyTyrret.h"
-#include "TDFlamethrowerTurret.h"
-#include "TDCannonTurret.h"
-#include "TDCrossbowTurret.h"
+#include "Turrets/TDEmptyTyrret.h"
+#include "Turrets/TDFlamethrowerTurret.h"
+#include "Turrets/TDCannonTurret.h"
+#include "Turrets/TDCrossbowTurret.h"
 #include "TDBuildingsManager.generated.h"
 
 UCLASS()

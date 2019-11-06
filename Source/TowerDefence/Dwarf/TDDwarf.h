@@ -6,7 +6,7 @@
 #include "Animation/AnimSequence.h"
 #include "Components/CapsuleComponent.h"
 #include "Particles/ParticleSystemComponent.h"
-#include "TDDamageTypeFlame.h"
+#include "Turrets/DamageTypes/TDDamageTypeFlame.h"
 #include "GameFramework/Character.h"
 #include "Engine/TargetPoint.h"
 #include "Kismet/KismetMathLibrary.h"

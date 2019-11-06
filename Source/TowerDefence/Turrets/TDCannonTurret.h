@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "TDCannonBall.h"
-#include "TDDwarf.h"
+#include "../Dwarf/TDDwarf.h"
 #include "UI/TDConstructionBarWidget.h"
 #include "TDCannonTurret.generated.h"
 

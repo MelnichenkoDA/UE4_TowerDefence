@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Animation/AnimSequence.h"
 #include "UI/TDConstructionBarWidget.h"
-#include "TDDamageTypeFlame.h"
+#include "DamageTypes/TDDamageTypeFlame.h"
 #include "Components/BoxComponent.h"
 #include "TDFlamethrowerTurret.generated.h"
 

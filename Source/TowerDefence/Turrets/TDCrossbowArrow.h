@@ -6,7 +6,7 @@
 #include "GameFramework/Actor.h"
 #include "Particles/ParticleSystemComponent.h"
 #include "Components/BoxComponent.h"
-#include "TDDamageTypeArrow.h"
+#include "DamageTypes/TDDamageTypeArrow.h"
 #include "TDCrossbowArrow.generated.h"
 
 UCLASS()

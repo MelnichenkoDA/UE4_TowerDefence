@@ -2,7 +2,7 @@
 
 
 #include "TDBuildingsMenuWidget.h"
-#include "TDEmptyTyrret.h"
+#include "Turrets/TDEmptyTyrret.h"
 
 UTDBuildingsMenuWidget::UTDBuildingsMenuWidget(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {
 	static ConstructorHelpers::FObjectFinder<UTexture2D> BorderImageAsset(TEXT("/Game/UI/MainMenu/BorderImage"));

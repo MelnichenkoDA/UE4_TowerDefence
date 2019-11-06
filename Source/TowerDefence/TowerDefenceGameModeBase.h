@@ -8,9 +8,9 @@
 #include "TDPlayerController.h"
 #include "UI/TDHUD.h"
 #include "Containers/Array.h"
-#include "TDDwarf.h"
-#include "TDWayPoint.h"
-#include "TDDwarfTypes.hpp"
+#include "Dwarf/TDDwarf.h"
+#include "Dwarf/TDWayPoint.h"
+#include "Dwarf/TDDwarfTypes.hpp"
 #include "TowerDefenceGameModeBase.generated.h"
 
 UCLASS()
