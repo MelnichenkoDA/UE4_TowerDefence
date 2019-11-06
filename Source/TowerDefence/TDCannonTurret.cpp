@@ -51,6 +51,11 @@ ATDCannonTurret::ATDCannonTurret()
 		}
 	}
 
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> AnimationShootingAsset(TEXT("AnimSequence'/Game/Assets/Animations/Cannon_Tower_Firing.Cannon_Tower_Firing'"));
+	if (AnimationShootingAsset.Succeeded()) {
+		AnimationShooting = AnimationShootingAsset.Object;
+	}
+
 	CurrentTarget = nullptr;
 
 	Damage = 10.0f;
@@ -127,11 +132,13 @@ void ATDCannonTurret::Tick(float DeltaTime){
 					
 					Direction.Normalize();
 					Direction *= 100;
-					SpawnPlace.AddToTranslation(FVector(Direction.X, Direction.Y, GetActorLocation().Z + 50.0f));
+					SpawnPlace.AddToTranslation(FVector(Direction.X, Direction.Y, 100));
 
 					ATDCannonBall* Ball = GetWorld()->SpawnActor<ATDCannonBall>(ATDCannonBall::StaticClass(), SpawnPlace, SpawnParams);
 					Ball->Initialize(CurrentTarget->GetActorLocation(), Damage);
 					ReloadCurrentTime = ReloadMaxTime;
+
+					SkeletalMeshCannon->PlayAnimation(AnimationShooting, false);
 				} else {
 					CurrentTarget = nullptr;
 				}

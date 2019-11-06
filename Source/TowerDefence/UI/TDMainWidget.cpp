@@ -35,6 +35,7 @@ bool UTDMainWidget::Initialize() {
 			if (ImageGoldBorder) {
 				Panel->AddChild(ImageGoldBorder);
 				ImageGoldBorder->SetBrushFromTexture(TextureBorder);
+				ImageGoldBorder->SetRenderScale(FVector2D(1.5, 1));
 				UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(ImageGoldBorder->Slot);
 				if (Slot) {
 					Slot->SetAnchors(FAnchors(0.0f, 0.0f));
@@ -115,7 +116,7 @@ bool UTDMainWidget::Initialize() {
 
 				UCanvasPanelSlot* Slot = Cast<UCanvasPanelSlot>(GameEndMessage->Slot);
 				if (Slot) {
-					Slot->SetAnchors(FAnchors(0.45f, 0.35));
+					Slot->SetAnchors(FAnchors(0.46f, 0.35));
 				}
 			}
 		}		

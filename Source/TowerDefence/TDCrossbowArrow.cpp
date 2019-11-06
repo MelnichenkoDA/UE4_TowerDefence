@@ -66,21 +66,15 @@ void ATDCrossbowArrow::Tick(float DeltaTime){
 
 	if (LifeTime > 0) {
 		FVector Direction = GetActorRotation().Vector();
-		FVector NewLocation = GetActorLocation();
-		switch (int(Direction.X)) {
-		case 0:
-			Direction.X = Direction.Y;
-			Direction.Y = 0.0f;
 
-			NewLocation -= Direction * MovementSpeed * DeltaTime;
-			break;
-		default:
-			Direction.Y = Direction.X;
-			Direction.X = 0.0f;
+		Swap(Direction.X, Direction.Y);
 
-			NewLocation += Direction * MovementSpeed * DeltaTime;
-			break;
+		if (Direction.X) {
+			Direction.X *= -1;
 		}
+
+		FVector NewLocation = GetActorLocation() + DeltaTime * Direction * MovementSpeed;		
+
 		SetActorLocation(NewLocation);
 	} else {
 		Destroy();

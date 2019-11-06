@@ -52,8 +52,7 @@ private:
 	
 	UPROPERTY(EditAnywhere)
 		ATDWayPoint* CurrentTarget;
-
-	UPROPERTY(EditAnywhere)
+	
 	UAnimSequence* AnimationDeath;
 
 	UAnimSequence* AnimationMoveFrd;	

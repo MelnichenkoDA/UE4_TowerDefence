@@ -8,7 +8,6 @@
 #include "TDCannonBall.h"
 #include "TDDwarf.h"
 #include "UI/TDConstructionBarWidget.h"
-
 #include "TDCannonTurret.generated.h"
 
 UCLASS()
@@ -52,6 +51,8 @@ private:
 		UBoxComponent* CollisionComponent;
 
 	UParticleSystemComponent* ParticleComponentCreation;
+
+	UAnimSequence* AnimationShooting;
 
 	ATDDwarf* CurrentTarget;
 

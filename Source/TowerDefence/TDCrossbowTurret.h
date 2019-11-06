@@ -34,16 +34,15 @@ private:
 		UStaticMeshComponent* StaticMeshFoundation;
 
 	UPROPERTY(EditAnywhere)
-		USkeletalMeshComponent* SkeletalMeshCrossbow;
-
-	UPROPERTY(EditAnywhere)
-		UAnimSequence* AnimationShooting;
+		USkeletalMeshComponent* SkeletalMeshCrossbow;	
 
 	UPROPERTY(EditAnywhere)
 		UParticleSystemComponent* ParticleComponentCreation;
 
 	UPROPERTY(EditAnywhere)
 		UTDConstructionBarWidget* ConstructionBarWidget;
+
+	UAnimSequence* AnimationShooting;
 
 	UPROPERTY(EditAnywhere)
 		float ReloadMaxTime;

@@ -36,7 +36,7 @@ ATDCannonBall::ATDCannonBall()
 		}
 	}
 	
-	MovementSpeed = 100.f;
+	MovementSpeed = 450.f;
 
 	LifeTime = 5.f;
 }

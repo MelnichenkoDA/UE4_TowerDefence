@@ -96,20 +96,13 @@ void ATDDwarf::Tick(float DeltaTime){
 			FVector NewLocation = GetActorLocation();
 			FVector Direction = GetActorRotation().Vector();	
 
-			switch (static_cast<int>(FMath::RoundHalfFromZero(Direction.X))) {
-			case 0:
-				Direction.X = Direction.Y;
-				Direction.Y = 0.0f;
+			Swap(Direction.X, Direction.Y);
 
-				NewLocation -= Direction * MovementSpeed * DeltaTime;
-				break;
-			default:
-				Direction.Y = Direction.X;
-				Direction.X = 0.0f;
-
-				NewLocation += Direction * MovementSpeed * DeltaTime;
-				break;
+			if (Direction.X) {
+				Direction.X *= -1;
 			}
+			NewLocation += Direction * MovementSpeed * DeltaTime;
+			
 			NewLocation.Z = GetActorLocation().Z;
 			SetActorLocation(NewLocation);
 		}

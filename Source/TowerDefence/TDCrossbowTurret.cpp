@@ -46,6 +46,11 @@ ATDCrossbowTurret::ATDCrossbowTurret()
 		}
 	}
 
+	static ConstructorHelpers::FObjectFinder<UAnimSequence> AnimationShootingAsset(TEXT("AnimSequence'/Game/Assets/Animations/ArbalestTower_Shooting.ArbalestTower_Shooting'"));
+	if (AnimationShootingAsset.Succeeded()) {
+		AnimationShooting = AnimationShootingAsset.Object;
+	}
+
 	ConstructionBarWidget = CreateWidget<UTDConstructionBarWidget>(GetWorld(), UTDConstructionBarWidget::StaticClass());
 
 	ReloadMaxTime = 5.0f;
@@ -92,30 +97,28 @@ void ATDCrossbowTurret::Tick(float DeltaTime){
 		}
 
 		ReloadCurrentTime -= DeltaTime;
-		if (ReloadCurrentTime <= 0) {
-			FVector Direction = GetActorRotation().Vector();
+		if (ReloadCurrentTime <= 0) {			
 			FVector SpawnPlace = GetActorLocation();
-			switch (int(Direction.X)) {
-			case 0:
-				Direction.X = Direction.Y;
-				Direction.Y = 0.0f;
-
-				SpawnPlace -= Direction * 200;
-				break;
-			default:
-				Direction.Y = Direction.X;
-				Direction.X = 0.0f;
-
-				SpawnPlace += Direction * 200;
-				break;
-			}
-			SpawnPlace.Z += 120;
 			FRotator SpawnRotation = GetActorRotation();
+			
+			FVector Dir = SpawnRotation.Vector();
+			
+			Swap(Dir.X, Dir.Y);			
+
+			if (Dir.X) {
+				Dir.X *= -1;
+			}
+
+			SpawnPlace += Dir * 100;
+			SpawnPlace.Z += 120;
+
 			SpawnRotation.Roll = 90.0f;
 
 			ATDCrossbowArrow* Arrow = GetWorld()->SpawnActor<ATDCrossbowArrow>(SpawnPlace, SpawnRotation);
 			Arrow->Initialize(Damage, ArrowMovementSpeed, ArrowLifeTime);
 			ReloadCurrentTime = ReloadMaxTime;
+
+			SkeletalMeshCrossbow->PlayAnimation(AnimationShooting, false);
 		}
 	}	
 }
