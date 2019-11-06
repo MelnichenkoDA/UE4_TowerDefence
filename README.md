@@ -11,4 +11,5 @@ Cannon turrets shoot dwarfs which are going by. Crossbow turret shoots arrows in
 !["Third example"](Screenshots/third_example.png) 
 
 If the player survives seven waves he wins. Otherwise he loses.
+
 !["End game example"](Screenshots/victory.png) 
